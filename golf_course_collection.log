@@ -1,0 +1,801 @@
+2025-10-19 18:31:11,126 - INFO - Starting golf course collection for Calgary, Alberta, Canada
+2025-10-19 18:31:16,505 - INFO - Fetched 46 golf courses.
+2025-10-19 18:31:16,937 - INFO - Created 41 records
+2025-10-19 18:31:24,947 - INFO - Saved map image: golf_courses_calgary.png
+2025-10-19 18:31:24,948 - INFO - Completed successfully with 41 entries.
+2025-10-19 18:32:47,191 - INFO - Starting golf course collection for Alberta, Canada
+2025-10-19 18:33:07,189 - INFO - Starting golf course collection for Alberta, Canada
+2025-10-19 18:57:29,280 - INFO - Fetched 315 golf courses.
+2025-10-19 18:57:30,262 - INFO - Created 284 records
+2025-10-19 18:57:51,161 - INFO - Saved map image: golf_courses_alberta.png
+2025-10-19 18:57:51,162 - INFO - Completed successfully with 284 entries.
+2025-10-19 19:09:50,316 - INFO - Existing data found, loading...
+2025-10-19 19:10:09,880 - INFO - Saved map image: golf_courses_alberta.png
+2025-10-19 19:10:09,881 - ERROR - Error during collection
+Traceback (most recent call last):
+  File "C:\Users\coler\Documents\Coding\CourseCollector\golfSearch.py", line 145, in main
+    print(f"Saved to:\n  {geojson_file}\n  {csv_file}")
+                          ^^^^^^^^^^^^
+UnboundLocalError: cannot access local variable 'geojson_file' where it is not associated with a value
+2025-10-19 19:26:43,376 - INFO - Starting golf course collection for Manitoba, Canada
+2025-10-19 19:26:43,376 - ERROR - Error during collection
+Traceback (most recent call last):
+  File "C:\Users\coler\Documents\Coding\CourseCollector\golfSearch.py", line 46, in main
+    if gdf is None:
+       ^^^
+UnboundLocalError: cannot access local variable 'gdf' where it is not associated with a value
+2025-10-19 19:28:43,672 - INFO - Starting golf course collection for Edmonton, Alberta, Canada
+2025-10-19 19:28:48,058 - INFO - Fetched 23 golf courses.
+2025-10-19 19:28:49,916 - INFO - Created 20 records
+2025-10-19 19:28:58,467 - INFO - Saved map image: golf_courses_edmonton.png
+2025-10-19 19:28:58,468 - INFO - Completed successfully with 20 entries.
+2025-10-19 19:30:46,537 - INFO - Starting golf course collection for Edmonton, Alberta, Canada
+2025-10-19 19:30:46,744 - INFO - Fetched 23 golf courses.
+2025-10-19 19:30:46,916 - ERROR - Error during collection
+Traceback (most recent call last):
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\pandas\core\indexes\base.py", line 3812, in get_loc
+    return self._engine.get_loc(casted_key)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "pandas/_libs/index.pyx", line 167, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 196, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7088, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7096, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'area_m2'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\coler\Documents\Coding\CourseCollector\golfSearch.py", line 77, in main
+    gdf = gdf[gdf['area_m2'] > 10000]  # >1 hectare
+              ~~~^^^^^^^^^^^
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\geopandas\geodataframe.py", line 1896, in __getitem__
+    result = super().__getitem__(key)
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\pandas\core\frame.py", line 4107, in __getitem__
+    indexer = self.columns.get_loc(key)
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\pandas\core\indexes\base.py", line 3819, in get_loc
+    raise KeyError(key) from err
+KeyError: 'area_m2'
+2025-10-19 19:31:43,068 - INFO - Starting golf course collection for Edmonton, Alberta, Canada
+2025-10-19 19:31:43,230 - INFO - Fetched 23 golf courses.
+2025-10-19 19:31:43,500 - INFO - Created 20 records
+2025-10-19 19:31:50,147 - INFO - Saved map image: golf_courses_edmonton.png
+2025-10-19 19:31:50,148 - INFO - Completed successfully with 20 entries.
+2025-10-19 19:40:39,463 - INFO - Existing data found, loading...
+2025-10-19 19:40:47,854 - INFO - Saved map image: golf_courses_edmonton.png
+2025-10-19 19:40:47,855 - ERROR - Error during collection
+Traceback (most recent call last):
+  File "C:\Users\coler\Documents\Coding\CourseCollector\golfSearch.py", line 146, in main
+    print(f"Saved to:\n  {geojson_file}\n  {csv_file}")
+                          ^^^^^^^^^^^^
+UnboundLocalError: cannot access local variable 'geojson_file' where it is not associated with a value
+2025-10-19 19:41:08,906 - INFO - Starting golf course collection for Edmonton, Alberta, Canada
+2025-10-19 19:41:09,039 - INFO - Fetched 23 golf courses.
+2025-10-19 19:41:09,319 - INFO - Created 20 records
+2025-10-19 19:41:16,997 - INFO - Saved map image: golf_courses_edmonton.png
+2025-10-19 19:41:16,998 - INFO - Completed successfully with 20 entries.
+2025-10-19 19:42:36,977 - INFO - Starting golf course collection for Edmonton, Alberta, Canada
+2025-10-19 19:42:37,109 - INFO - Fetched 23 golf courses.
+2025-10-19 19:42:37,364 - INFO - Created 20 records
+2025-10-19 19:42:43,713 - INFO - Saved map image: golf_courses_edmonton.png
+2025-10-19 19:42:43,714 - INFO - Completed successfully with 20 entries.
+2025-10-19 19:45:26,275 - INFO - Starting golf course collection for Alberta, Canada
+2025-10-19 19:45:30,863 - INFO - Fetched 315 golf courses.
+2025-10-19 19:45:31,235 - INFO - Created 284 records
+2025-10-19 19:45:54,096 - INFO - Saved map image: golf_courses_alberta.png
+2025-10-19 19:45:54,097 - INFO - Completed successfully with 284 entries.
+2025-10-19 19:48:27,020 - INFO - Existing data found, loading...
+2025-10-19 19:49:16,536 - INFO - Starting golf course collection for Ontario, Canada
+2025-10-19 20:25:25,453 - INFO - Fetched 950 golf courses.
+2025-10-19 20:25:27,006 - INFO - Created 898 records
+2025-10-19 20:25:34,735 - INFO - Saved map image: golf_courses_ontario.png
+2025-10-19 20:25:34,736 - INFO - Completed successfully with 898 entries.
+2025-10-19 20:43:18,480 - INFO - Starting golf course collection for Montreal, Quebec, Canada
+2025-10-19 20:43:30,578 - INFO - Starting golf course collection for Montreal, Quebec, Canada
+2025-10-19 20:43:35,343 - INFO - Fetched 10 golf courses.
+2025-10-19 20:43:35,561 - ERROR - Error during collection
+Traceback (most recent call last):
+  File "pyogrio/_io.pyx", line 2080, in pyogrio._io.ogr_create
+  File "pyogrio/_err.pyx", line 218, in pyogrio._err.check_pointer
+pyogrio._err.CPLE_OpenFailedError: Failed to create GeoJSON datasource: /data/golf_courses_quebec.geojson: 
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\coler\Documents\Coding\CourseCollector\golfSearch.py", line 89, in main
+    gdf.to_file(geojson_file, driver="GeoJSON")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\geopandas\geodataframe.py", line 1637, in to_file
+    _to_file(self, filename, driver, schema, index, **kwargs)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\geopandas\io\file.py", line 731, in _to_file
+    _to_file_pyogrio(df, filename, driver, schema, crs, mode, metadata, **kwargs)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\geopandas\io\file.py", line 793, in _to_file_pyogrio
+    pyogrio.write_dataframe(df, filename, driver=driver, metadata=metadata, **kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\pyogrio\geopandas.py", line 710, in write_dataframe
+    write(
+    ~~~~~^
+        path,
+        ^^^^^
+    ...<18 lines>...
+        **kwargs,
+        ^^^^^^^^^
+    )
+    ^
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\pyogrio\raw.py", line 723, in write
+    ogr_write(
+    ~~~~~~~~~^
+        path,
+        ^^^^^
+    ...<16 lines>...
+        gdal_tz_offsets=gdal_tz_offsets,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "pyogrio/_io.pyx", line 2463, in pyogrio._io.ogr_write
+  File "pyogrio/_io.pyx", line 2282, in pyogrio._io.create_ogr_dataset_layer
+  File "pyogrio/_io.pyx", line 2096, in pyogrio._io.ogr_create
+pyogrio.errors.DataSourceError: Failed to create GeoJSON datasource: /data/golf_courses_quebec.geojson: 
+2025-10-19 20:44:20,198 - INFO - Starting golf course collection for Montreal, Quebec, Canada
+2025-10-19 20:44:20,393 - INFO - Fetched 10 golf courses.
+2025-10-19 20:44:20,612 - INFO - Created 10 records
+2025-10-19 20:44:27,960 - INFO - Saved map image: images/golf_courses_montreal.png
+2025-10-19 20:44:27,960 - INFO - Completed successfully with 10 entries.
+2025-10-19 20:49:09,402 - INFO - Starting golf course collection for Quebec, Canada
+2025-10-19 20:49:28,569 - INFO - Starting golf course collection for Quebec, Canada
+2025-10-19 21:00:44,391 - ERROR - Error during collection
+Traceback (most recent call last):
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\urllib3\connectionpool.py", line 787, in urlopen
+    response = self._make_request(
+        conn,
+    ...<10 lines>...
+        **response_kw,
+    )
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\urllib3\connectionpool.py", line 534, in _make_request
+    response = conn.getresponse()
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\urllib3\connection.py", line 565, in getresponse
+    httplib_response = super().getresponse()
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2544.0_x64__qbz5n2kfra8p0\Lib\http\client.py", line 1430, in getresponse
+    response.begin()
+    ~~~~~~~~~~~~~~^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2544.0_x64__qbz5n2kfra8p0\Lib\http\client.py", line 331, in begin
+    version, status, reason = self._read_status()
+                              ~~~~~~~~~~~~~~~~~^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2544.0_x64__qbz5n2kfra8p0\Lib\http\client.py", line 300, in _read_status
+    raise RemoteDisconnected("Remote end closed connection without"
+                             " response")
+http.client.RemoteDisconnected: Remote end closed connection without response
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\requests\adapters.py", line 644, in send
+    resp = conn.urlopen(
+        method=request.method,
+    ...<9 lines>...
+        chunked=chunked,
+    )
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\urllib3\connectionpool.py", line 841, in urlopen
+    retries = retries.increment(
+        method, url, error=new_e, _pool=self, _stacktrace=sys.exc_info()[2]
+    )
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\urllib3\util\retry.py", line 474, in increment
+    raise reraise(type(error), error, _stacktrace)
+          ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\urllib3\util\util.py", line 38, in reraise
+    raise value.with_traceback(tb)
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\urllib3\connectionpool.py", line 787, in urlopen
+    response = self._make_request(
+        conn,
+    ...<10 lines>...
+        **response_kw,
+    )
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\urllib3\connectionpool.py", line 534, in _make_request
+    response = conn.getresponse()
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\urllib3\connection.py", line 565, in getresponse
+    httplib_response = super().getresponse()
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2544.0_x64__qbz5n2kfra8p0\Lib\http\client.py", line 1430, in getresponse
+    response.begin()
+    ~~~~~~~~~~~~~~^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2544.0_x64__qbz5n2kfra8p0\Lib\http\client.py", line 331, in begin
+    version, status, reason = self._read_status()
+                              ~~~~~~~~~~~~~~~~~^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2544.0_x64__qbz5n2kfra8p0\Lib\http\client.py", line 300, in _read_status
+    raise RemoteDisconnected("Remote end closed connection without"
+                             " response")
+urllib3.exceptions.ProtocolError: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\coler\Documents\Coding\CourseCollector\golfSearch.py", line 50, in main
+    gdf = ox.features_from_place(region, tags=tags)
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\osmnx\features.py", line 279, in features_from_place
+    return features_from_polygon(polygon, tags)
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\osmnx\features.py", line 332, in features_from_polygon
+    return _create_gdf(response_jsons, polygon, tags)
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\osmnx\features.py", line 406, in _create_gdf
+    for response_json in response_jsons:
+                         ^^^^^^^^^^^^^^
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\osmnx\_overpass.py", line 432, in _download_overpass_features
+    yield _overpass_request(OrderedDict(data=query_str))
+          ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\osmnx\_overpass.py", line 469, in _overpass_request
+    response = requests.post(
+        url,
+    ...<3 lines>...
+        **settings.requests_kwargs,
+    )
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\requests\api.py", line 115, in post
+    return request("post", url, data=data, json=json, **kwargs)
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\requests\api.py", line 59, in request
+    return session.request(method=method, url=url, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\requests\sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\requests\sessions.py", line 703, in send
+    r = adapter.send(request, **kwargs)
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\requests\adapters.py", line 659, in send
+    raise ConnectionError(err, request=request)
+requests.exceptions.ConnectionError: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+2025-10-19 21:17:34,283 - INFO - Starting golf course collection for Alberta, Canada
+2025-10-19 21:17:34,807 - INFO - Fetched 315 golf courses.
+2025-10-19 21:17:35,152 - INFO - Created 284 records
+2025-10-19 21:17:58,201 - INFO - Saved map image: images/golf_courses_alberta.png
+2025-10-19 21:17:58,202 - INFO - Completed successfully with 284 entries.
+2025-10-19 21:19:00,208 - INFO - Starting golf course collection for Ontario, Canada
+2025-10-19 21:19:09,878 - INFO - Fetched 950 golf courses.
+2025-10-19 21:19:10,383 - INFO - Created 898 records
+2025-10-19 21:19:13,624 - INFO - Saved map image: images/golf_courses_ontario.png
+2025-10-19 21:19:13,625 - INFO - Completed successfully with 898 entries.
+2025-10-19 21:21:25,031 - INFO - Starting golf course collection for Quebec, Canada
+2025-10-19 21:54:04,767 - INFO - Fetched 409 golf courses.
+2025-10-19 21:54:05,246 - INFO - Created 382 records
+2025-10-19 21:54:11,422 - INFO - Saved map image: images/golf_courses_quebec.png
+2025-10-19 21:54:11,422 - INFO - Completed successfully with 382 entries.
+2025-10-19 21:58:28,735 - INFO - Starting golf course collection for Alberta, Canada
+2025-10-19 21:58:29,265 - INFO - Fetched 315 golf courses.
+2025-10-19 21:58:29,469 - ERROR - Error during collection
+Traceback (most recent call last):
+  File "C:\Users\coler\Documents\Coding\CourseCollector\golfSearch.py", line 120, in main
+    gdf = fill_missing_names(gdf)
+  File "C:\Users\coler\Documents\Coding\CourseCollector\golfSearch.py", line 47, in fill_missing_names
+    lat = gdf.at[idx, 'lat'] if 'lat' in gdf.columns else None
+          ~~~~~~^^^^^^^^^^^^
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\pandas\core\indexing.py", line 2572, in __getitem__
+    raise ValueError("Invalid call for scalar access (getting)!")
+ValueError: Invalid call for scalar access (getting)!
+2025-10-19 21:59:29,946 - INFO - Starting golf course collection for Alberta, Canada
+2025-10-19 21:59:30,449 - INFO - Fetched 315 golf courses.
+2025-10-19 21:59:30,659 - ERROR - Error during collection
+Traceback (most recent call last):
+  File "C:\Users\coler\Documents\Coding\CourseCollector\golfSearch.py", line 120, in main
+    gdf = fill_missing_names(gdf)
+  File "C:\Users\coler\Documents\Coding\CourseCollector\golfSearch.py", line 47, in fill_missing_names
+    lat = gdf.at[idx, 'lat'] if 'lat' in gdf.columns else None
+          ~~~~~~^^^^^^^^^^^^
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\pandas\core\indexing.py", line 2572, in __getitem__
+    raise ValueError("Invalid call for scalar access (getting)!")
+ValueError: Invalid call for scalar access (getting)!
+2025-10-19 22:02:21,625 - INFO - Starting golf course collection for Alberta, Canada
+2025-10-19 22:02:22,109 - INFO - Fetched 315 golf courses.
+2025-10-19 22:02:22,301 - ERROR - Error during collection
+Traceback (most recent call last):
+  File "C:\Users\coler\Documents\Coding\CourseCollector\golfSearch.py", line 120, in main
+    gdf = fill_missing_names(gdf)
+  File "C:\Users\coler\Documents\Coding\CourseCollector\golfSearch.py", line 47, in fill_missing_names
+    lat = gdf.at[idx, 'lat'] if 'lat' in gdf.columns else None
+          ~~~~~~^^^^^^^^^^^^
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\pandas\core\indexing.py", line 2572, in __getitem__
+    raise ValueError("Invalid call for scalar access (getting)!")
+ValueError: Invalid call for scalar access (getting)!
+2025-10-19 22:04:21,898 - INFO - Starting golf course collection for Alberta, Canada
+2025-10-19 22:04:22,395 - INFO - Fetched 315 golf courses.
+2025-10-19 22:04:22,582 - ERROR - Error during collection
+Traceback (most recent call last):
+  File "C:\Users\coler\Documents\Coding\CourseCollector\golfSearch.py", line 120, in main
+    gdf = fill_missing_names(gdf)
+  File "C:\Users\coler\Documents\Coding\CourseCollector\golfSearch.py", line 47, in fill_missing_names
+    lat = gdf.at[idx, 'lat'] if 'lat' in gdf.columns else None
+          ~~~~~~^^^^^^^^^^^^
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\pandas\core\indexing.py", line 2572, in __getitem__
+    raise ValueError("Invalid call for scalar access (getting)!")
+ValueError: Invalid call for scalar access (getting)!
+2025-10-19 22:06:29,222 - INFO - Starting golf course collection for Alberta, Canada
+2025-10-19 22:06:29,707 - INFO - Fetched 315 golf courses.
+2025-10-19 22:06:29,734 - ERROR - Error during collection
+Traceback (most recent call last):
+  File "C:\Users\coler\Documents\Coding\CourseCollector\golfSearch.py", line 120, in main
+    gdf = fill_missing_names(gdf)
+  File "C:\Users\coler\Documents\Coding\CourseCollector\golfSearch.py", line 47, in fill_missing_names
+    lat = gdf.at[idx, 'lat'] if 'lat' in gdf.columns else None
+          ~~~~~~^^^^^^^^^^^^
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\pandas\core\indexing.py", line 2572, in __getitem__
+    raise ValueError("Invalid call for scalar access (getting)!")
+ValueError: Invalid call for scalar access (getting)!
+2025-10-19 22:06:52,458 - INFO - Starting golf course collection for Alberta, Canada
+2025-10-19 22:06:52,944 - INFO - Fetched 315 golf courses.
+2025-10-19 22:06:52,971 - ERROR - Error during collection
+Traceback (most recent call last):
+  File "C:\Users\coler\Documents\Coding\CourseCollector\golfSearch.py", line 120, in main
+    gdf = fill_missing_names(gdf)
+  File "C:\Users\coler\Documents\Coding\CourseCollector\golfSearch.py", line 47, in fill_missing_names
+    lat = gdf.at[idx, 'lat'] if 'lat' in gdf.columns else None
+          ~~~~~~^^^^^^^^^^^^
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\pandas\core\indexing.py", line 2572, in __getitem__
+    raise ValueError("Invalid call for scalar access (getting)!")
+ValueError: Invalid call for scalar access (getting)!
+2025-10-19 22:07:26,879 - INFO - Starting golf course collection for Alberta, Canada
+2025-10-19 22:07:27,393 - INFO - Fetched 315 golf courses.
+2025-10-19 22:07:27,598 - ERROR - Error during collection
+Traceback (most recent call last):
+  File "C:\Users\coler\Documents\Coding\CourseCollector\golfSearch.py", line 121, in main
+    gdf = fill_missing_names(gdf)
+  File "C:\Users\coler\Documents\Coding\CourseCollector\golfSearch.py", line 47, in fill_missing_names
+    lat = gdf.at[idx, 'lat'] if 'lat' in gdf.columns else None
+          ~~~~~~^^^^^^^^^^^^
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\pandas\core\indexing.py", line 2572, in __getitem__
+    raise ValueError("Invalid call for scalar access (getting)!")
+ValueError: Invalid call for scalar access (getting)!
+2025-10-19 22:09:08,234 - INFO - Starting golf course collection for Ontario, Canada
+2025-10-19 22:09:09,333 - INFO - Fetched 950 golf courses.
+2025-10-19 22:09:09,532 - ERROR - Error during collection
+Traceback (most recent call last):
+  File "C:\Users\coler\Documents\Coding\CourseCollector\golfSearch.py", line 121, in main
+    gdf = fill_missing_names(gdf)
+  File "C:\Users\coler\Documents\Coding\CourseCollector\golfSearch.py", line 47, in fill_missing_names
+    lat = gdf.at[idx, 'lat'] if 'lat' in gdf.columns else None
+          ~~~~~~^^^^^^^^^^^^
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\pandas\core\indexing.py", line 2572, in __getitem__
+    raise ValueError("Invalid call for scalar access (getting)!")
+ValueError: Invalid call for scalar access (getting)!
+2025-10-19 22:09:49,104 - INFO - Starting golf course collection for Ontario, Canada
+2025-10-19 22:09:50,213 - INFO - Fetched 950 golf courses.
+2025-10-19 22:09:50,470 - ERROR - Error during collection
+Traceback (most recent call last):
+  File "C:\Users\coler\Documents\Coding\CourseCollector\golfSearch.py", line 121, in main
+    gdf = fill_missing_names(gdf)
+  File "C:\Users\coler\Documents\Coding\CourseCollector\golfSearch.py", line 47, in fill_missing_names
+    lat = gdf.at[idx, 'lat'] if 'lat' in gdf.columns else None
+          ~~~~~~^^^^^^^^^^^^
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\pandas\core\indexing.py", line 2572, in __getitem__
+    raise ValueError("Invalid call for scalar access (getting)!")
+ValueError: Invalid call for scalar access (getting)!
+2025-10-19 22:13:26,134 - INFO - Starting golf course collection for Ontario, Canada
+2025-10-19 22:13:27,307 - INFO - Fetched 950 golf courses.
+2025-10-19 22:13:27,549 - ERROR - Error during collection
+Traceback (most recent call last):
+  File "C:\Users\coler\Documents\Coding\CourseCollector\golfSearch.py", line 121, in main
+    gdf = fill_missing_names(gdf)
+  File "C:\Users\coler\Documents\Coding\CourseCollector\golfSearch.py", line 47, in fill_missing_names
+    lat = gdf.at[idx, 'lat'] if 'lat' in gdf.columns else None
+          ~~~~~~^^^^^^^^^^^^
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\pandas\core\indexing.py", line 2572, in __getitem__
+    raise ValueError("Invalid call for scalar access (getting)!")
+ValueError: Invalid call for scalar access (getting)!
+2025-10-19 22:13:34,286 - INFO - Starting golf course collection for Ontario, Canada
+2025-10-19 22:13:35,435 - INFO - Fetched 950 golf courses.
+2025-10-19 22:13:35,482 - ERROR - Error during collection
+Traceback (most recent call last):
+  File "C:\Users\coler\Documents\Coding\CourseCollector\golfSearch.py", line 124, in main
+    gdf = fill_missing_names(gdf)
+  File "C:\Users\coler\Documents\Coding\CourseCollector\golfSearch.py", line 47, in fill_missing_names
+    lat = gdf.at[idx, 'lat'] if 'lat' in gdf.columns else None
+          ~~~~~~^^^^^^^^^^^^
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\pandas\core\indexing.py", line 2572, in __getitem__
+    raise ValueError("Invalid call for scalar access (getting)!")
+ValueError: Invalid call for scalar access (getting)!
+2025-10-19 22:14:20,144 - INFO - Starting golf course collection for Ontario, Canada
+2025-10-19 22:14:21,466 - INFO - Fetched 950 golf courses.
+2025-10-19 22:14:21,519 - ERROR - Error during collection
+Traceback (most recent call last):
+  File "c:\Users\coler\Documents\Coding\CourseCollector\golfSearch.py", line 124, in main
+    gdf = fill_missing_names(gdf)
+  File "c:\Users\coler\Documents\Coding\CourseCollector\golfSearch.py", line 47, in fill_missing_names
+    lat = gdf.at[idx, 'lat'] if 'lat' in gdf.columns else None
+          ~~~~~~^^^^^^^^^^^^
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\pandas\core\indexing.py", line 2572, in __getitem__
+    raise ValueError("Invalid call for scalar access (getting)!")
+ValueError: Invalid call for scalar access (getting)!
+2025-10-19 22:15:58,809 - INFO - Starting golf course collection for Ontario, Canada
+2025-10-19 22:16:00,111 - INFO - Fetched 950 golf courses.
+2025-10-19 22:16:00,737 - INFO - Created 898 records
+2025-10-19 22:16:04,293 - INFO - Saved map image: images/golf_courses_ontario.png
+2025-10-19 22:16:04,293 - INFO - Completed successfully with 898 entries.
+2025-10-19 22:18:46,251 - INFO - Starting golf course collection for Ontario, Canada
+2025-10-19 22:18:47,543 - INFO - Fetched 950 golf courses.
+2025-10-19 22:18:48,089 - INFO - Created 898 records
+2025-10-19 22:18:51,416 - INFO - Saved map image: images/golf_courses_ontario.png
+2025-10-19 22:18:51,417 - INFO - Completed successfully with 898 entries.
+2025-10-19 22:19:37,935 - INFO - Starting golf course collection for Ontario, Canada
+2025-10-19 22:19:39,311 - INFO - Fetched 950 golf courses.
+2025-10-19 22:19:39,844 - INFO - Created 898 records
+2025-10-19 22:19:43,262 - INFO - Saved map image: images/golf_courses_ontario.png
+2025-10-19 22:19:43,263 - INFO - Completed successfully with 898 entries.
+2025-10-19 22:20:56,331 - INFO - Starting golf course collection for Ontario, Canada
+2025-10-19 22:20:57,680 - INFO - Fetched 950 golf courses.
+2025-10-19 22:20:58,428 - INFO - Created 898 records
+2025-10-19 22:21:01,928 - ERROR - Failed to create/save map image
+Traceback (most recent call last):
+  File "C:\Users\coler\Documents\Coding\CourseCollector\golfSearch.py", line 142, in main
+    fig.savefig(image_file, dpi=300, bbox_inches='tight', pad_inches=0)
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\matplotlib\figure.py", line 3490, in savefig
+    self.canvas.print_figure(fname, **kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\matplotlib\backends\backend_qtagg.py", line 75, in print_figure
+    super().print_figure(*args, **kwargs)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\matplotlib\backend_bases.py", line 2186, in print_figure
+    result = print_method(
+        filename,
+    ...<3 lines>...
+        bbox_inches_restore=_bbox_inches_restore,
+        **kwargs)
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\matplotlib\backend_bases.py", line 2042, in <lambda>
+    print_method = functools.wraps(meth)(lambda *args, **kwargs: meth(
+                                                                 ~~~~^
+        *args, **{k: v for k, v in kwargs.items() if k not in skip}))
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\matplotlib\backends\backend_agg.py", line 481, in print_png
+    self._print_pil(filename_or_obj, "png", pil_kwargs, metadata)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\matplotlib\backends\backend_agg.py", line 430, in _print_pil
+    mpl.image.imsave(
+    ~~~~~~~~~~~~~~~~^
+        filename_or_obj, self.buffer_rgba(), format=fmt, origin="upper",
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        dpi=self.figure.dpi, metadata=metadata, pil_kwargs=pil_kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\matplotlib\image.py", line 1657, in imsave
+    image.save(fname, **pil_kwargs)
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\PIL\Image.py", line 2583, in save
+    fp = builtins.open(filename, "w+b")
+OSError: [Errno 22] Invalid argument: 'images/golf_courses_ontario.png'
+2025-10-19 22:21:02,219 - INFO - Completed successfully with 898 entries.
+2025-10-19 22:22:18,308 - INFO - Starting golf course collection for Ontario, Canada
+2025-10-19 22:22:19,645 - INFO - Fetched 950 golf courses.
+2025-10-19 22:22:20,304 - INFO - Created 898 records
+2025-10-19 22:22:23,869 - INFO - Saved map image: images/golf_courses_ontario.png
+2025-10-19 22:22:23,870 - INFO - Completed successfully with 898 entries.
+2025-10-19 22:25:44,870 - INFO - Starting golf course collection for Ontario, Canada
+2025-10-19 22:25:46,169 - INFO - Fetched 950 golf courses.
+2025-10-19 22:25:46,784 - INFO - Created 898 records
+2025-10-19 22:25:50,051 - INFO - Saved map image: images/golf_courses_ontario.png
+2025-10-19 22:25:50,051 - INFO - Completed successfully with 898 entries.
+2025-10-19 22:26:16,835 - INFO - Starting golf course collection for Ontario, Canada
+2025-10-19 22:26:18,144 - INFO - Fetched 950 golf courses.
+2025-10-19 22:26:18,746 - INFO - Created 898 records
+2025-10-19 22:26:23,420 - INFO - Saved map image: images/golf_courses_ontario.png
+2025-10-19 22:26:23,421 - INFO - Completed successfully with 898 entries.
+2025-10-19 22:29:28,234 - INFO - Starting golf course collection for Ontario, Canada
+2025-10-19 22:29:29,418 - INFO - Fetched 950 golf courses.
+2025-10-19 22:29:29,626 - ERROR - Error during collection
+Traceback (most recent call last):
+  File "C:\Users\coler\Documents\Coding\CourseCollector\golfSearch.py", line 82, in main
+    if not name or name == np.nan:
+                           ^^
+NameError: name 'np' is not defined
+2025-10-19 22:29:47,988 - INFO - Starting golf course collection for Ontario, Canada
+2025-10-19 22:29:49,086 - INFO - Fetched 950 golf courses.
+2025-10-19 22:29:50,977 - ERROR - Error during collection
+Traceback (most recent call last):
+  File "C:\Users\coler\Documents\Coding\CourseCollector\golfSearch.py", line 83, in main
+    check = find_nearby_golf_course(lat, lon)['name']
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+TypeError: 'NoneType' object is not subscriptable
+2025-10-19 22:30:39,309 - INFO - Starting golf course collection for Ontario, Canada
+2025-10-19 22:30:40,505 - INFO - Fetched 950 golf courses.
+2025-10-19 22:30:40,777 - ERROR - Error during collection
+Traceback (most recent call last):
+  File "c:\Users\coler\Documents\Coding\CourseCollector\golfSearch.py", line 83, in main
+    check = find_nearby_golf_course(lat, lon)['name']
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+TypeError: 'NoneType' object is not subscriptable
+2025-10-19 22:32:23,628 - INFO - Starting golf course collection for Ontario, Canada
+2025-10-19 22:32:24,817 - INFO - Fetched 950 golf courses.
+2025-10-19 22:36:34,583 - ERROR - Error during collection
+Traceback (most recent call last):
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\urllib3\connectionpool.py", line 787, in urlopen
+    response = self._make_request(
+        conn,
+    ...<10 lines>...
+        **response_kw,
+    )
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\urllib3\connectionpool.py", line 534, in _make_request
+    response = conn.getresponse()
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\urllib3\connection.py", line 565, in getresponse
+    httplib_response = super().getresponse()
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2544.0_x64__qbz5n2kfra8p0\Lib\http\client.py", line 1430, in getresponse
+    response.begin()
+    ~~~~~~~~~~~~~~^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2544.0_x64__qbz5n2kfra8p0\Lib\http\client.py", line 331, in begin
+    version, status, reason = self._read_status()
+                              ~~~~~~~~~~~~~~~~~^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2544.0_x64__qbz5n2kfra8p0\Lib\http\client.py", line 300, in _read_status
+    raise RemoteDisconnected("Remote end closed connection without"
+                             " response")
+http.client.RemoteDisconnected: Remote end closed connection without response
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\requests\adapters.py", line 644, in send
+    resp = conn.urlopen(
+        method=request.method,
+    ...<9 lines>...
+        chunked=chunked,
+    )
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\urllib3\connectionpool.py", line 841, in urlopen
+    retries = retries.increment(
+        method, url, error=new_e, _pool=self, _stacktrace=sys.exc_info()[2]
+    )
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\urllib3\util\retry.py", line 474, in increment
+    raise reraise(type(error), error, _stacktrace)
+          ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\urllib3\util\util.py", line 38, in reraise
+    raise value.with_traceback(tb)
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\urllib3\connectionpool.py", line 787, in urlopen
+    response = self._make_request(
+        conn,
+    ...<10 lines>...
+        **response_kw,
+    )
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\urllib3\connectionpool.py", line 534, in _make_request
+    response = conn.getresponse()
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\urllib3\connection.py", line 565, in getresponse
+    httplib_response = super().getresponse()
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2544.0_x64__qbz5n2kfra8p0\Lib\http\client.py", line 1430, in getresponse
+    response.begin()
+    ~~~~~~~~~~~~~~^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2544.0_x64__qbz5n2kfra8p0\Lib\http\client.py", line 331, in begin
+    version, status, reason = self._read_status()
+                              ~~~~~~~~~~~~~~~~~^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2544.0_x64__qbz5n2kfra8p0\Lib\http\client.py", line 300, in _read_status
+    raise RemoteDisconnected("Remote end closed connection without"
+                             " response")
+urllib3.exceptions.ProtocolError: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\coler\Documents\Coding\CourseCollector\golfSearch.py", line 83, in main
+    check = find_nearby_golf_course(lat, lon)
+  File "C:\Users\coler\Documents\Coding\CourseCollector\nameFiller.py", line 45, in find_nearby_golf_course
+    response = requests.get(url)
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\requests\api.py", line 73, in get
+    return request("get", url, params=params, **kwargs)
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\requests\api.py", line 59, in request
+    return session.request(method=method, url=url, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\requests\sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\requests\sessions.py", line 703, in send
+    r = adapter.send(request, **kwargs)
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\requests\adapters.py", line 659, in send
+    raise ConnectionError(err, request=request)
+requests.exceptions.ConnectionError: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+2025-10-19 22:37:08,295 - INFO - Starting golf course collection for Ontario, Canada
+2025-10-19 22:37:10,072 - INFO - Fetched 950 golf courses.
+2025-10-19 22:37:19,157 - INFO - Created 898 records
+2025-10-19 22:37:23,673 - INFO - Saved map image: images/golf_courses_ontario.png
+2025-10-19 22:37:23,673 - INFO - Completed successfully with 898 entries.
+2025-10-19 22:37:39,935 - INFO - Starting golf course collection for Alberta, Canada
+2025-10-19 22:37:40,451 - INFO - Fetched 315 golf courses.
+2025-10-19 22:38:21,217 - INFO - Created 284 records
+2025-10-19 22:38:37,497 - INFO - Saved map image: images/golf_courses_alberta.png
+2025-10-19 22:38:37,497 - INFO - Completed successfully with 284 entries.
+2025-10-19 22:39:21,607 - INFO - Starting golf course collection for Quebec, Canada
+2025-10-19 22:39:29,547 - INFO - Fetched 409 golf courses.
+2025-10-19 22:39:55,125 - INFO - Created 382 records
+2025-10-19 22:40:09,409 - INFO - Saved map image: images/golf_courses_quebec.png
+2025-10-19 22:40:09,410 - INFO - Completed successfully with 382 entries.
+2025-10-19 22:43:18,902 - INFO - Starting golf course collection for British Columbia, Canada
+2025-10-19 22:51:10,295 - ERROR - Error during collection
+Traceback (most recent call last):
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\urllib3\connectionpool.py", line 787, in urlopen
+    response = self._make_request(
+        conn,
+    ...<10 lines>...
+        **response_kw,
+    )
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\urllib3\connectionpool.py", line 534, in _make_request
+    response = conn.getresponse()
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\urllib3\connection.py", line 565, in getresponse
+    httplib_response = super().getresponse()
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2544.0_x64__qbz5n2kfra8p0\Lib\http\client.py", line 1430, in getresponse
+    response.begin()
+    ~~~~~~~~~~~~~~^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2544.0_x64__qbz5n2kfra8p0\Lib\http\client.py", line 331, in begin
+    version, status, reason = self._read_status()
+                              ~~~~~~~~~~~~~~~~~^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2544.0_x64__qbz5n2kfra8p0\Lib\http\client.py", line 300, in _read_status
+    raise RemoteDisconnected("Remote end closed connection without"
+                             " response")
+http.client.RemoteDisconnected: Remote end closed connection without response
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\requests\adapters.py", line 644, in send
+    resp = conn.urlopen(
+        method=request.method,
+    ...<9 lines>...
+        chunked=chunked,
+    )
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\urllib3\connectionpool.py", line 841, in urlopen
+    retries = retries.increment(
+        method, url, error=new_e, _pool=self, _stacktrace=sys.exc_info()[2]
+    )
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\urllib3\util\retry.py", line 474, in increment
+    raise reraise(type(error), error, _stacktrace)
+          ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\urllib3\util\util.py", line 38, in reraise
+    raise value.with_traceback(tb)
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\urllib3\connectionpool.py", line 787, in urlopen
+    response = self._make_request(
+        conn,
+    ...<10 lines>...
+        **response_kw,
+    )
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\urllib3\connectionpool.py", line 534, in _make_request
+    response = conn.getresponse()
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\urllib3\connection.py", line 565, in getresponse
+    httplib_response = super().getresponse()
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2544.0_x64__qbz5n2kfra8p0\Lib\http\client.py", line 1430, in getresponse
+    response.begin()
+    ~~~~~~~~~~~~~~^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2544.0_x64__qbz5n2kfra8p0\Lib\http\client.py", line 331, in begin
+    version, status, reason = self._read_status()
+                              ~~~~~~~~~~~~~~~~~^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2544.0_x64__qbz5n2kfra8p0\Lib\http\client.py", line 300, in _read_status
+    raise RemoteDisconnected("Remote end closed connection without"
+                             " response")
+urllib3.exceptions.ProtocolError: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\coler\Documents\Coding\CourseCollector\golfSearch.py", line 53, in main
+    gdf = ox.features_from_place(region, tags=tags)
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\osmnx\features.py", line 279, in features_from_place
+    return features_from_polygon(polygon, tags)
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\osmnx\features.py", line 332, in features_from_polygon
+    return _create_gdf(response_jsons, polygon, tags)
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\osmnx\features.py", line 406, in _create_gdf
+    for response_json in response_jsons:
+                         ^^^^^^^^^^^^^^
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\osmnx\_overpass.py", line 432, in _download_overpass_features
+    yield _overpass_request(OrderedDict(data=query_str))
+          ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\osmnx\_overpass.py", line 469, in _overpass_request
+    response = requests.post(
+        url,
+    ...<3 lines>...
+        **settings.requests_kwargs,
+    )
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\requests\api.py", line 115, in post
+    return request("post", url, data=data, json=json, **kwargs)
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\requests\api.py", line 59, in request
+    return session.request(method=method, url=url, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\requests\sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\requests\sessions.py", line 703, in send
+    r = adapter.send(request, **kwargs)
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\requests\adapters.py", line 659, in send
+    raise ConnectionError(err, request=request)
+requests.exceptions.ConnectionError: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+2025-10-19 22:53:08,023 - INFO - Starting golf course collection for British Columbia, Canada
+2025-10-19 23:12:07,116 - ERROR - Error during collection
+Traceback (most recent call last):
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\urllib3\connectionpool.py", line 787, in urlopen
+    response = self._make_request(
+        conn,
+    ...<10 lines>...
+        **response_kw,
+    )
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\urllib3\connectionpool.py", line 534, in _make_request
+    response = conn.getresponse()
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\urllib3\connection.py", line 565, in getresponse
+    httplib_response = super().getresponse()
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2544.0_x64__qbz5n2kfra8p0\Lib\http\client.py", line 1430, in getresponse
+    response.begin()
+    ~~~~~~~~~~~~~~^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2544.0_x64__qbz5n2kfra8p0\Lib\http\client.py", line 331, in begin
+    version, status, reason = self._read_status()
+                              ~~~~~~~~~~~~~~~~~^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2544.0_x64__qbz5n2kfra8p0\Lib\http\client.py", line 300, in _read_status
+    raise RemoteDisconnected("Remote end closed connection without"
+                             " response")
+http.client.RemoteDisconnected: Remote end closed connection without response
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\requests\adapters.py", line 644, in send
+    resp = conn.urlopen(
+        method=request.method,
+    ...<9 lines>...
+        chunked=chunked,
+    )
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\urllib3\connectionpool.py", line 841, in urlopen
+    retries = retries.increment(
+        method, url, error=new_e, _pool=self, _stacktrace=sys.exc_info()[2]
+    )
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\urllib3\util\retry.py", line 474, in increment
+    raise reraise(type(error), error, _stacktrace)
+          ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\urllib3\util\util.py", line 38, in reraise
+    raise value.with_traceback(tb)
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\urllib3\connectionpool.py", line 787, in urlopen
+    response = self._make_request(
+        conn,
+    ...<10 lines>...
+        **response_kw,
+    )
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\urllib3\connectionpool.py", line 534, in _make_request
+    response = conn.getresponse()
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\urllib3\connection.py", line 565, in getresponse
+    httplib_response = super().getresponse()
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2544.0_x64__qbz5n2kfra8p0\Lib\http\client.py", line 1430, in getresponse
+    response.begin()
+    ~~~~~~~~~~~~~~^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2544.0_x64__qbz5n2kfra8p0\Lib\http\client.py", line 331, in begin
+    version, status, reason = self._read_status()
+                              ~~~~~~~~~~~~~~~~~^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2544.0_x64__qbz5n2kfra8p0\Lib\http\client.py", line 300, in _read_status
+    raise RemoteDisconnected("Remote end closed connection without"
+                             " response")
+urllib3.exceptions.ProtocolError: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\coler\Documents\Coding\CourseCollector\golfSearch.py", line 53, in main
+    gdf = ox.features_from_place(region, tags=tags)
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\osmnx\features.py", line 279, in features_from_place
+    return features_from_polygon(polygon, tags)
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\osmnx\features.py", line 332, in features_from_polygon
+    return _create_gdf(response_jsons, polygon, tags)
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\osmnx\features.py", line 406, in _create_gdf
+    for response_json in response_jsons:
+                         ^^^^^^^^^^^^^^
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\osmnx\_overpass.py", line 432, in _download_overpass_features
+    yield _overpass_request(OrderedDict(data=query_str))
+          ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\osmnx\_overpass.py", line 469, in _overpass_request
+    response = requests.post(
+        url,
+    ...<3 lines>...
+        **settings.requests_kwargs,
+    )
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\requests\api.py", line 115, in post
+    return request("post", url, data=data, json=json, **kwargs)
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\requests\api.py", line 59, in request
+    return session.request(method=method, url=url, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\requests\sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\requests\sessions.py", line 703, in send
+    r = adapter.send(request, **kwargs)
+  File "C:\Users\coler\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\requests\adapters.py", line 659, in send
+    raise ConnectionError(err, request=request)
+requests.exceptions.ConnectionError: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+2025-10-19 23:21:32,795 - INFO - Starting golf course collection for British Columbia, Canada
+2025-10-19 23:28:15,091 - INFO - Fetched 344 golf courses.
+2025-10-19 23:29:34,052 - INFO - Created 319 records
+2025-10-19 23:29:40,895 - INFO - Saved map image: images/golf_courses_british_columbia.png
+2025-10-19 23:29:40,895 - INFO - Completed successfully with 319 entries.
+2025-10-19 23:32:32,191 - INFO - Starting golf course collection for Manitoba, Canada
+2025-10-19 23:53:39,601 - INFO - Fetched 125 golf courses.
+2025-10-19 23:54:09,518 - INFO - Created 118 records
+2025-10-19 23:54:21,679 - INFO - Saved map image: images/golf_courses_manitoba.png
+2025-10-19 23:54:21,680 - INFO - Completed successfully with 118 entries.
+2025-10-19 23:55:31,951 - INFO - Starting golf course collection for Newfoundland and Labrador, Canada
+2025-10-20 00:14:43,332 - INFO - Fetched 23 golf courses.
+2025-10-20 00:14:47,141 - INFO - Created 18 records
+2025-10-20 00:14:53,902 - INFO - Saved map image: images/golf_courses_newfoundland_and_labrador.png
+2025-10-20 00:14:53,903 - INFO - Completed successfully with 18 entries.

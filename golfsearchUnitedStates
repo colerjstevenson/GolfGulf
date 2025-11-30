@@ -1,0 +1,408 @@
+#!/usr/bin/env python3
+"""
+Okay Cole I'm trying to golf courses for U.S. states using OSMnx administrative subregions.
+I asked Aaron at McGill and he suggested the workflow be throttled via scope settings so that very large states do not overwhelm
+local storage or memory.
+"""
+
+from __future__ import annotations
+
+import argparse
+import logging
+import time
+import warnings
+from dataclasses import dataclass
+from datetime import datetime
+from pathlib import Path
+from typing import Iterable, List, Sequence
+
+import geopandas as gpd
+import matplotlib.pyplot as plt
+import osmnx as ox
+import pandas as pd
+
+from nameFiller import find_nearby_golf_course
+
+try:
+    import contextily as ctx
+
+    _HAS_CONTEXTILY = True
+except ImportError:
+    _HAS_CONTEXTILY = False
+
+LOG_FILE = Path("golf_course_collection.log")
+MIN_AREA_M2 = 10000
+STATE_PROJECTION = 5070  # NAD83 / Conus Albers
+LATLON_EPSG = 4326
+WEB_MERCATOR = 3857
+ADMIN_LEVELS = ("6", "7")  # Counties / equivalent, fall back to finer divisions
+
+
+@dataclass
+class ScopeOptions:
+    """Scope/guard-rail parameters for large states."""
+
+    min_area_m2: int = MIN_AREA_M2
+    max_subregions: int | None = None
+    max_courses: int | None = None
+    skip_map: bool = False
+    output_dir: Path = Path("data")
+
+
+def configure_logging(log_file: Path) -> None:
+    log_file.parent.mkdir(parents=True, exist_ok=True)
+    logging.basicConfig(
+        filename=log_file,
+        level=logging.INFO,
+        format="%(asctime)s - %(levelname)s - %(message)s",
+    )
+
+
+def ensure_state_context(state_name: str) -> str:
+    state_name = state_name.strip()
+    if not state_name:
+        raise ValueError("State name cannot be empty.")
+    lowered = state_name.lower()
+    if "united states" in lowered or ", usa" in lowered:
+        return state_name
+    return f"{state_name}, United States"
+
+
+def get_subregions(state_query: str, max_subregions: int | None = None) -> gpd.GeoDataFrame:
+    """Return counties (admin level 6) or their fallback admin level 7 units."""
+    state_gdf = ox.geocode_to_gdf(state_query)
+    if state_gdf.empty:
+        raise ValueError(f"State '{state_query}' not found in OSM.")
+    polygon = state_gdf.loc[0, "geometry"]
+    subregions = gpd.GeoDataFrame()
+
+    for level in ADMIN_LEVELS:
+        try:
+            subregions = ox.features_from_polygon(
+                polygon,
+                tags={"boundary": "administrative", "admin_level": level},
+            )
+        except Exception as exc:  # pragma: no cover - defensive guard
+            logging.warning("Failed to fetch admin level %s for %s: %s", level, state_query, exc)
+            continue
+
+        if not subregions.empty:
+            break
+
+    if subregions.empty:
+        logging.warning("No admin subregions found for %s", state_query)
+        return subregions
+
+    subregions = subregions[subregions.geometry.notnull() & subregions.is_valid].copy()
+    subregions = subregions[["name", "geometry"]].rename(columns={"name": "subregion"})
+    if max_subregions is not None:
+        subregions = subregions.head(max_subregions)
+    return subregions
+
+
+def fetch_golf_courses(subregion: str, polygon) -> gpd.GeoDataFrame:
+    """Fetch golf polygons within a subregion polygon."""
+    if polygon is None or polygon.is_empty:
+        logging.warning("Skipping subregion %s due to empty geometry", subregion)
+        return gpd.GeoDataFrame(columns=["name", "geometry", "subregion"])
+
+    tags = {"leisure": "golf_course"}
+    try:
+        gdf = ox.geometries.geometries_from_polygon(polygon, tags)
+    except Exception as exc:
+        logging.warning("Failed to fetch golf courses for %s: %s", subregion, exc)
+        return gpd.GeoDataFrame(columns=["name", "geometry", "subregion"])
+
+    if gdf.empty:
+        return gdf
+
+    gdf = gdf.to_crs(epsg=3347)  # NAD83 / StatsCan Lambert (meters)
+    gdf['area_m2'] = gdf['geometry'].area
+
+    # Compute centroids and convert back to lat/lon
+    centroids = gdf.copy()
+    centroids = centroids.to_crs(epsg=4326)
+    gdf['lat'] = centroids['geometry'].centroid.y
+    gdf['lon'] = centroids['geometry'].centroid.x
+    gdf['province'] = [province for _ in range(len(gdf))]
+    gdf['gcid'] = [f'{province[0].upper()}{province[-1].upper()}{i+1:05d}' for i in range(len(gdf))]
+    gdf['name'] = gdf['name'].fillna('')
+    # gdf['name'] = [name if name and name != '' else find_nearby_golf_course(lat, lon)['name'] if find_nearby_golf_course(lat, lon) else 'Unknown Golf Course' for name, lat, lon in zip(gdf['name'], gdf['lat'], gdf['lon'])]
+    name_check = []
+    for name, lat, lon in zip(gdf['name'], gdf['lat'], gdf['lon']):
+        print(name)
+        if not name or name == '':
+            check = find_nearby_golf_course(lat, lon)
+            if check:
+                name_check.append(check['name'])
+            else:
+                name_check.append('Unknown Golf Course')
+        else:
+            name_check.append(name)
+    
+    gdf['name'] = name_check
+    # -----------------------
+    # Filter and sort
+    # -----------------------
+    # Remove tiny polygons (sometimes OSM includes things like mini-putt or errors)
+    gdf = gdf[gdf['area_m2'] > ]  # >1 hectare
+    gdf = gdf.sort_values(by='area_m2', ascending=False)
+
+    return gdf
+
+
+def maybe_limit_courses(all_gdfs: List[gpd.GeoDataFrame], max_courses: int | None) -> bool:
+    """Return True if we have reached the course ceiling."""
+    if max_courses is None:
+        return False
+    current = sum(len(gdf) for gdf in all_gdfs)
+    return current >= max_courses
+
+
+def collect_state_courses(state: str, scope: ScopeOptions) -> gpd.GeoDataFrame:
+    state_query = ensure_state_context(state)
+    logging.info("Collecting golf courses for %s", state_query)
+    subregions = get_subregions(state_query, scope.max_subregions)
+
+    if subregions.empty:
+        logging.warning("No subregions found for %s; skipping.", state_query)
+        return gpd.GeoDataFrame()
+
+    subregion_count = len(subregions)
+    logging.info("Processing %s subregions for %s", subregion_count, state_query)
+    all_gdfs: List[gpd.GeoDataFrame] = []
+
+    for _, row in subregions.iterrows():
+        subregion_name = row.get("subregion") or "unknown_subregion"
+        gdf = fetch_golf_courses(subregion_name, row["geometry"])
+        if gdf.empty:
+            continue
+        all_gdfs.append(gdf)
+        if maybe_limit_courses(all_gdfs, scope.max_courses):
+            logging.info("Reached max_courses limit (%s) for %s", scope.max_courses, state_query)
+            break
+
+    if not all_gdfs:
+        logging.warning("No golf courses found in %s", state_query)
+        return gpd.GeoDataFrame()
+
+    merged = gpd.GeoDataFrame(pd.concat(all_gdfs, ignore_index=True), crs="EPSG:4326")
+    merged = merged[merged.geometry.notnull() & ~merged.geometry.is_empty]
+    merged = merged.drop_duplicates(subset=["name", "subregion", "geometry"])
+
+    merged = merged.to_crs(epsg=STATE_PROJECTION)
+    merged["area_m2"] = merged.geometry.area
+
+    # Centroids in lat/lon (safe copy to avoid mutating `merged`)
+    centroids = merged.to_crs(epsg=LATLON_EPSG)
+    merged["lat"] = centroids.geometry.centroid.y
+    merged["lon"] = centroids.geometry.centroid.x
+
+    filtered = merged[merged["area_m2"] >= scope.min_area_m2].sort_values(
+        by="area_m2", ascending=False
+    )
+    logging.info("Finished %s; kept %s polygons after filtering", state_query, len(filtered))
+    return filtered
+
+
+def save_outputs(gdf: gpd.GeoDataFrame, state: str, scope: ScopeOptions) -> tuple[Path, Path, Path | None]:
+    """Persist GeoJSON, CSV, and optional PNG map."""
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M")
+    state_slug = state.lower().replace(" ", "_")
+    scope.output_dir.mkdir(parents=True, exist_ok=True)
+
+    geojson_path = scope.output_dir / f"{state_slug}_{timestamp}.geojson"
+    csv_path = scope.output_dir / f"{state_slug}_{timestamp}.csv"
+
+    gdf.to_file(geojson_path, driver="GeoJSON")
+    gdf[["name", "subregion", "lat", "lon", "area_m2"]].to_csv(csv_path, index=False)
+
+    png_path: Path | None = None
+    if not scope.skip_map:
+        png_path = scope.output_dir / f"{state_slug}_{timestamp}.png"
+        try:
+            render_map(gdf, png_path)
+        except Exception as exc:
+            png_path = None
+            warnings.warn(f"Failed to create map for {state}: {exc}")
+
+    return geojson_path, csv_path, png_path
+
+
+def render_map(gdf: gpd.GeoDataFrame, output_path: Path) -> None:
+    gdf_3857 = gdf.to_crs(epsg=WEB_MERCATOR)
+    fig, ax = plt.subplots(figsize=(12, 12))
+    gdf_3857.plot(
+        ax=ax,
+        facecolor="tab:green",
+        edgecolor="black",
+        alpha=0.35,
+        linewidth=0.8,
+    )
+
+    for _, row in gdf_3857.iterrows():
+        name = row.get("name")
+        if not name:
+            continue
+        centroid = row.geometry.centroid
+        ax.text(
+            centroid.x,
+            centroid.y,
+            name,
+            fontsize=8,
+            fontweight="semibold",
+            ha="center",
+            va="center",
+            color="white",
+            bbox=dict(facecolor="black", alpha=0.4, boxstyle="round"),
+        )
+
+    minx, miny, maxx, maxy = gdf_3857.total_bounds
+    pad_x = (maxx - minx) * 0.08
+    pad_y = (maxy - miny) * 0.08
+    ax.set_xlim(minx - pad_x, maxx + pad_x)
+    ax.set_ylim(miny - pad_y, maxy + pad_y)
+    ax.set_axis_off()
+
+    if _HAS_CONTEXTILY:
+        try:
+            ctx.add_basemap(ax, crs=gdf_3857.crs.to_string(), source=ctx.providers.CartoDB.Positron)
+        except Exception as exc:
+            warnings.warn(f"contextily basemap failed: {exc}")
+
+    plt.tight_layout()
+    fig.savefig(output_path, dpi=300, bbox_inches="tight", pad_inches=0)
+    plt.close(fig)
+
+
+def parse_states(args: argparse.Namespace) -> List[str]:
+    states: List[str] = []
+    if args.states:
+        states.extend(args.states)
+
+    if args.states_file:
+        if not args.states_file.exists():
+            raise FileNotFoundError(f"States file {args.states_file} not found.")
+        with args.states_file.open("r", encoding="utf-8") as handle:
+            for line in handle:
+                cleaned = line.strip()
+                if cleaned and not cleaned.startswith("#"):
+                    states.append(cleaned)
+
+    deduped: List[str] = []
+    seen = set()
+    for state in states:
+        key = state.strip().lower()
+        if key and key not in seen:
+            seen.add(key)
+            deduped.append(state.strip())
+
+    if args.max_states is not None:
+        deduped = deduped[: args.max_states]
+
+    if not deduped:
+        raise ValueError("No states provided. Use --states or --states-file.")
+
+    return deduped
+
+
+def build_arg_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(
+        description="Collect golf courses for one or more U.S. states via OSM."
+    )
+    parser.add_argument(
+        "--states",
+        nargs="+",
+        help="One or more state names (e.g., --states Alabama Texas).",
+    )
+    parser.add_argument(
+        "--states-file",
+        type=Path,
+        help="Text file with one state per line. Lines starting with # are ignored.",
+    )
+    parser.add_argument(
+        "--max-states",
+        type=int,
+        help="Process at most this many states (useful when testing long lists).",
+    )
+    parser.add_argument(
+        "--max-subregions",
+        type=int,
+        help="Limit the number of county-level subregions per state.",
+    )
+    parser.add_argument(
+        "--max-courses",
+        type=int,
+        help="Stop processing a state once this many golf courses have been catalogued.",
+    )
+    parser.add_argument(
+        "--min-area",
+        type=int,
+        default=MIN_AREA_M2,
+        help=f"Minimum polygon area in square meters (default {MIN_AREA_M2}).",
+    )
+    parser.add_argument(
+        "--skip-map",
+        action="store_true",
+        help="Skip PNG map generation to save time.",
+    )
+    parser.add_argument(
+        "--output-dir",
+        type=Path,
+        default=Path("data"),
+        help="Directory for GeoJSON/CSV/PNG outputs (default ./data).",
+    )
+    parser.add_argument(
+        "--state-pause",
+        type=float,
+        default=0.0,
+        help="Seconds to wait between states (helps avoid API rate issues).",
+    )
+    parser.add_argument(
+        "--log-file",
+        type=Path,
+        default=LOG_FILE,
+        help=f"Log file path (default {LOG_FILE}).",
+    )
+    return parser
+
+
+def main() -> None:
+    parser = build_arg_parser()
+    args = parser.parse_args()
+    configure_logging(args.log_file)
+
+    try:
+        states = parse_states(args)
+    except Exception as exc:
+        parser.error(str(exc))
+
+    scope = ScopeOptions(
+        min_area_m2=args.min_area,
+        max_subregions=args.max_subregions,
+        max_courses=args.max_courses,
+        skip_map=args.skip_map,
+        output_dir=args.output_dir,
+    )
+
+    for idx, state in enumerate(states, start=1):
+        logging.info("Starting %s (%s/%s)", state, idx, len(states))
+        try:
+            gdf = collect_state_courses(state, scope)
+            if gdf.empty:
+                print(f"{state}: No golf courses found or data unavailable.")
+                continue
+            geojson, csv, png = save_outputs(gdf, state, scope)
+            print(f"{state}: wrote {len(gdf)} courses to {geojson} and {csv}")
+            if png:
+                print(f"{state}: map saved to {png}")
+        except Exception as exc:  # pragma: no cover - runtime safeguard
+            logging.exception("Failed to process %s", state)
+            print(f"{state}: Error {exc}")
+
+        if args.state_pause and idx < len(states):
+            time.sleep(args.state_pause)
+
+
+if __name__ == "__main__":
+    main()
