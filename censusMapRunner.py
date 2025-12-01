@@ -1,7 +1,9 @@
+import argparse
 import subprocess
 import sys
 import time
 from pathlib import Path
+from interactive_map_builder import build_assets
 
 # Known Canadian cities with provinces (expandable)
 KNOWN_CITIES = {
@@ -55,9 +57,49 @@ def ensure_all_caches():
             print(f"Failed to build cache for {city}: {e}")
 
 
-def ensure_maps():
-    # Build maps for all cached cities (script handles skipping/non-existent automatically)
-    run([sys.executable, 'build_all_maps.py'])
+def infer_city_name(slug: str) -> str:
+    return ' '.join(w.capitalize() for w in slug.split('_'))
+
+
+def iter_cached_city_slugs():
+    if not DATA_ROOT.exists():
+        return []
+    slugs = []
+    for d in DATA_ROOT.iterdir():
+        if d.is_dir() and ((d / 'profile_cache.json').exists() or list(d.glob('*_profile_cache.json'))):
+            slugs.append(d.name)
+    return slugs
+
+
+def map_output_path_for_slug(slug: str) -> Path:
+    return MAPS_ROOT / f"{slug}_interactive_map.html"
+
+
+def ensure_maps(overwrite: bool = False):
+    MAPS_ROOT.mkdir(exist_ok=True, parents=True)
+    slugs = iter_cached_city_slugs()
+    if not slugs:
+        print("No cached cities found under data/censusShape; nothing to build.")
+        return
+    print(f"Evaluating {len(slugs)} city/cities for map generation…")
+    built = 0
+    skipped = 0
+    for slug in slugs:
+        out_path = map_output_path_for_slug(slug)
+        if out_path.exists() and not overwrite:
+            print(f"Skip existing map: {out_path}")
+            skipped += 1
+            continue
+        city_name = infer_city_name(slug)
+        province = KNOWN_CITIES.get(city_name, '')
+        print(f"Building interactive map for {city_name} ({province or 'province auto'})…")
+        try:
+            build_assets(city_name, province, data_root=DATA_ROOT, out_root=MAPS_ROOT)
+            time.sleep(1)
+            built += 1
+        except Exception as e:
+            print(f"FAILED {city_name}: {e}")
+    print(f"Map generation complete. Built: {built}, Skipped: {skipped}.")
 
 
 def generate_index():
@@ -83,11 +125,19 @@ def open_index(port=8000):
 
 
 def main():
+    parser = argparse.ArgumentParser(description='Build census caches, maps, and serve index')
+    parser.add_argument('--overwrite', action='store_true', help='Regenerate maps even if output HTML already exists')
+    parser.add_argument('--no-serve', action='store_true', help='Do not start local HTTP server')
+    parser.add_argument('--port', type=int, default=8000, help='Port for local HTTP server')
+    args = parser.parse_args()
+
     ensure_all_caches()
-    ensure_maps()
+    ensure_maps(overwrite=args.overwrite)
     generate_index()
-    start_server(8000)
-    open_index(8000)
+
+    if not args.no_serve:
+        start_server(args.port)
+        open_index(args.port)
     print('All done.')
 
 if __name__ == '__main__':

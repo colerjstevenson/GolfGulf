@@ -6,8 +6,10 @@ from pathlib import Path
 import re
 
 import geopandas as gpd
+import numpy as np
 import pandas as pd
 import osmnx as ox
+from spatial_lag_assets import load_golf_points, compute_exposure_features, fit_metric_spatial_lag_values, summarize as summarize_lag
 
 
 def slugify(text: str) -> str:
@@ -42,14 +44,14 @@ def load_tracts(shapefile_dir: str) -> gpd.GeoDataFrame:
     return gdf
 
 
-def clip_and_simplify(tracts: gpd.GeoDataFrame, boundary: gpd.GeoDataFrame, tolerance: float = 40.0) -> gpd.GeoDataFrame:
+def clip_and_simplify(tracts: gpd.GeoDataFrame, boundary: gpd.GeoDataFrame, tolerance: float = 40.0) -> tuple[gpd.GeoDataFrame, gpd.GeoDataFrame]:
     city_poly = boundary.iloc[0].geometry
     clipped = gpd.clip(tracts, city_poly)
     clipped['CTUID'] = clipped['CTUID'].astype(str)
     # Simplify geometry for size reduction (tolerance in meters since EPSG:3347)
     simplified = clipped.copy()
     simplified['geometry'] = simplified['geometry'].simplify(tolerance, preserve_topology=True)
-    return simplified
+    return clipped, simplified
 
 
 def load_profile_cache(city_dir: Path) -> dict:
@@ -81,7 +83,7 @@ def summarize_metric(values: list) -> dict:
     }
 
 
-def build_assets(city: str, province: str, data_root: Path, out_root: Path, tolerance: float = 40.0):
+def build_assets(city: str, province: str, data_root: Path, out_root: Path, tolerance: float = 40.0, verbose: bool = False, skip_lag: bool = False):
     city_slug = city.replace(' ', '_').lower()
     city_dir = data_root / city_slug
     if not city_dir.exists():
@@ -90,7 +92,7 @@ def build_assets(city: str, province: str, data_root: Path, out_root: Path, tole
     print("Loading boundary + tracts…")
     boundary = load_city_boundary(city, province)
     tracts = load_tracts(str(data_root))
-    simplified = clip_and_simplify(tracts, boundary, tolerance=tolerance)
+    clipped, simplified = clip_and_simplify(tracts, boundary, tolerance=tolerance)
 
     print("Loading profile cache…")
     profile = load_profile_cache(city_dir)
@@ -142,6 +144,58 @@ def build_assets(city: str, province: str, data_root: Path, out_root: Path, tole
         "province": province,
         "categories": []
     }
+
+    # Precompute golf exposure features for this city's tracts
+    if verbose:
+        print("Computing golf exposure features for spatial lag…")
+    # Use tracts in 3347 CRS (pre-simplification, to avoid empty centroids after simplify)
+    tracts_3347 = clipped.copy()
+    tracts_3347_crs = tracts_3347.crs
+    # Load and clip golf courses to city + buffer for efficient exposure computation
+    courses_csv = Path('data') / 'canada' / 'Fully_Matched_Golf_Courses.csv'
+    golf_pts_all = load_golf_points(str(courses_csv))
+    
+    # Filter to just courses near the city (same 10km buffer used for map display)
+    if golf_pts_all is not None and not golf_pts_all.empty:
+        city_poly = boundary.iloc[0].geometry
+        buffer_m = 10000.0  # 10 km buffer
+        city_buffer = city_poly.buffer(buffer_m)
+        golf_pts = golf_pts_all[golf_pts_all.geometry.within(city_buffer)].copy()
+        if verbose:
+            print(f"Loaded {len(golf_pts)} golf courses near city (filtered from {len(golf_pts_all)} total).")
+    else:
+        golf_pts = None
+        if verbose:
+            print("Warning: No golf courses loaded; exposure will be NaN.")
+    
+    if golf_pts is not None and not golf_pts.empty:
+        exposure_df = compute_exposure_features(tracts_3347, golf_pts)
+    else:
+        exposure_df = pd.DataFrame({
+            'CTUID': tracts_3347['CTUID'].astype(str), 
+            'dist_to_gc_km': float('nan'), 
+            'golf_count': 0
+        })
+    
+    # Check exposure validity
+    finite_dists = exposure_df['dist_to_gc_km'].replace([np.inf, -np.inf], np.nan).dropna()
+    if verbose:
+        print(f"Exposure: {len(finite_dists)} / {len(exposure_df)} tracts have finite distance to golf courses.")
+        if len(finite_dists) > 0:
+            print(f"  Distance range: {finite_dists.min():.2f} - {finite_dists.max():.2f} km")
+    # Debug: list any tracts with NaN exposure
+    if verbose:
+        try:
+            merged_geo = tracts_3347[['CTUID','geometry']].merge(exposure_df, on='CTUID', how='left')
+            nan_rows = merged_geo[merged_geo['dist_to_gc_km'].isna()]
+            if len(nan_rows) > 0:
+                print(f"  Exposure NaN count: {len(nan_rows)} (showing up to 10):")
+                for _, r in nan_rows.head(10).iterrows():
+                    gt = getattr(r['geometry'], 'geom_type', type(r['geometry']).__name__)
+                    ie = getattr(r['geometry'], 'is_empty', True)
+                    print(f"    CTUID {r['CTUID']}: geom_type={gt}, is_empty={ie}")
+        except Exception as _e:
+            pass
     for category, metric_map in categories.items():
         cat_entry = {"category": category, "metrics": []}
         for metric, ct_values in metric_map.items():
@@ -164,6 +218,35 @@ def build_assets(city: str, province: str, data_root: Path, out_root: Path, tole
                     sanitized[k] = v
             with open(metrics_dir / f"{metric_slug}.json", 'w', encoding='utf-8') as mf:
                 json.dump(sanitized, mf, ensure_ascii=False)
+
+            # Compute spatial lag variant for this metric and write alongside
+            if not skip_lag:
+                try:
+                    lag_series, skip_reasons = fit_metric_spatial_lag_values(tracts_3347, exposure_df, ct_values)
+                    
+                    # Debug: count skip reasons
+                    if verbose and skip_reasons:
+                        reason_counts = {}
+                        for reason in skip_reasons.values():
+                            reason_counts[reason] = reason_counts.get(reason, 0) + 1
+                        print(f"  [{metric_slug}] Skipped {len(skip_reasons)} tracts: {reason_counts}")
+                    
+                    if lag_series is not None and not lag_series.empty:
+                        lag_map = {str(k): (None if (v is None or (isinstance(v, float) and (math.isnan(v) or math.isinf(v)))) else float(v))
+                                   for k, v in lag_series.to_dict().items()}
+                        with open(metrics_dir / f"{metric_slug}__lag.json", 'w', encoding='utf-8') as mf:
+                            json.dump(lag_map, mf, ensure_ascii=False)
+                        # Write skip reasons diagnostic
+                        with open(metrics_dir / f"{metric_slug}__lag_skip.json", 'w', encoding='utf-8') as mf:
+                            json.dump(skip_reasons, mf, ensure_ascii=False)
+                        lag_stats = summarize_lag([vv for vv in lag_map.values() if vv is not None])
+                        # Attach lag stats to index entry
+                        cat_entry["metrics"][-1]["lagStats"] = lag_stats
+                except Exception as e:
+                    # Skip lag variant if anything fails
+                    if verbose:
+                        print(f"  [{metric_slug}] Lag computation failed: {e}")
+                    pass
         index["categories"].append(cat_entry)
 
     idx_path = geo_out_dir / 'metrics_index.json'
@@ -196,7 +279,15 @@ def build_assets(city: str, province: str, data_root: Path, out_root: Path, tole
             # Reproject to boundary CRS for precise clip
             gpoints_proj = gpoints.to_crs('EPSG:3347')
             city_poly = boundary.iloc[0].geometry
-            inside = gpd.clip(gpoints_proj, city_poly)
+            # Include courses within city and within a buffer around the city (nearby)
+            buffer_m = 10000.0  # 10 km
+            city_buffer = city_poly.buffer(buffer_m)
+            nearby = gpoints_proj[gpoints_proj.geometry.within(city_buffer)]
+            # Mark which are strictly inside vs nearby-only
+            inside_mask = nearby.geometry.within(city_poly)
+            nearby = nearby.copy()
+            nearby['nearby'] = (~inside_mask).astype(int)  # 1 if in buffer but outside city
+            inside = nearby
             # Back to WGS84 for Leaflet
             inside_wgs = inside.to_crs('EPSG:4326').copy()
             # Keep only useful columns
@@ -204,14 +295,23 @@ def build_assets(city: str, province: str, data_root: Path, out_root: Path, tole
             for c in keep_cols:
                 if c not in inside_wgs.columns:
                     inside_wgs[c] = None
-            inside_wgs = inside_wgs[keep_cols + ['geometry']]
+            # Preserve the nearby flag
+            if 'nearby' not in inside_wgs.columns:
+                inside_wgs['nearby'] = 0
+            inside_wgs = inside_wgs[keep_cols + ['nearby', 'geometry']]
             # Rename for nicer popups
             inside_wgs = inside_wgs.rename(columns={
                 'CourseName':'name', 'Address':'address', 'City':'city', 'AccessType':'access',
                 'NumHoles':'holes', 'Par':'par', 'url':'url', 'website':'website'
             })
             inside_wgs.to_file(geo_out_dir / 'golf_courses.geojson', driver='GeoJSON')
-            print(f"Wrote {len(inside_wgs)} golf course points.")
+            # Log counts for inside vs nearby-only
+            try:
+                total = len(inside_wgs)
+                nb_only = int(inside_wgs['nearby'].sum())
+                print(f"Wrote {total} golf course points ({nb_only} nearby outside boundary, {total-nb_only} inside city).")
+            except Exception:
+                print(f"Wrote {len(inside_wgs)} golf course points.")
         else:
             print(f"Golf courses CSV not found at {courses_csv}; skipping.")
     except Exception as e:
@@ -251,6 +351,9 @@ def build_assets(city: str, province: str, data_root: Path, out_root: Path, tole
 <div id='app'>
     <div id='sidebar'>
         <input id='search' type='text' placeholder='Search metrics…' />
+        <label style='display:block;margin:6px 0 8px 0;font-size:12px;'>
+            <input type='checkbox' id='lagToggle' /> Spatial Lag Mode
+        </label>
         <div id='currentMetricDisplay' style='font-size:12px;margin:4px 0 8px 0;color:#333'><em>No metric selected</em></div>
         <div id='categories'></div>
         <div id='detail'><em>Click a tract for details…</em></div>
@@ -262,10 +365,13 @@ def build_assets(city: str, province: str, data_root: Path, out_root: Path, tole
 const ASSET_ROOT = '../data/censusShape/{CITY_SLUG}/web_assets';
 let tractLayer = null;
 let currentMetric = null; // slug
-let metricsCache = new Map(); // slug -> { ctuid: value }
+let currentMode = 'raw'; // 'raw' | 'lag'
+let metricsCache = new Map(); // key(slug|mode) -> { ctuid: value }
+let skipReasonsCache = new Map(); // slug -> { ctuid: reason }
 let indexData = null; // metrics index
 let metricMeta = new Map(); // slug -> {name, stats}
 let coursesLayer = null;
+function cacheKey(slug, mode){ return slug + '::' + (mode||'raw'); }
 const map = L.map('map').setView([49.25, -123.1], 11);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19 }).addTo(map);
 async function fetchJSON(path) {
@@ -284,12 +390,16 @@ async function fetchJSON(path) {
     }
 }
 function clamp01(x){ return x<0?0:(x>1?1:x); }
-// Single-hue scale: blue with varying lightness (light for low, dark for high)
+// Color helpers: use blue for raw, green for spatial lag
+function colorFromT(t){
+    const hue = (currentMode === 'lag') ? 140 : 210; // green vs blue
+    const light = 92 - 55*t; // 92% -> 37%
+    return 'hsl(' + hue + ',70%,' + light.toFixed(1) + '%)';
+}
 function colorScale(val, min, max) {
     if (val==null || isNaN(val)) return '#eee';
     const t = clamp01((val - min) / (max - min + 1e-9));
-    const light = 92 - 55*t; // 92% -> 37%
-    return 'hsl(210,70%,' + light.toFixed(1) + '%)';
+    return colorFromT(t);
 }
 function buildRamp(min, max) {
     const steps = 6;
@@ -304,12 +414,25 @@ function buildRamp(min, max) {
 }
 function applyMetric(metricSlug, stats) {
     currentMetric = metricSlug;
-    const values = metricsCache.get(metricSlug);
-    // Determine scale mode: min-max vs quantile fallback when spread is tight or flat
+    const key = cacheKey(metricSlug, currentMode);
+    const values = metricsCache.get(key);
+    // Compute min/max from the actual values present in the visible layer
+    const arrAll = Object.values(values).map(v => Number(v)).filter(v => isFinite(v));
     let min = stats.min, max = stats.max;
+    if (arrAll.length > 0) {
+        arrAll.sort((a,b)=>a-b);
+        min = arrAll[0];
+        max = arrAll[arrAll.length - 1];
+    }
+    // Determine scale mode: min-max vs quantile fallback when spread is tight or flat
     let useQuantiles = false;
-    const p10 = (stats.p10 ?? min);
-    const p90 = (stats.p90 ?? max);
+    // Estimate p10/p90 from actual values for decision and legend
+    let p10 = (stats.p10 ?? min), p90 = (stats.p90 ?? max);
+    if (arrAll.length >= 5) {
+        const qidx = q => arrAll[Math.max(0, Math.min(arrAll.length-1, Math.floor(arrAll.length*q)))];
+        p10 = qidx(0.10);
+        p90 = qidx(0.90);
+    }
     if (!isFinite(min) || !isFinite(max) || min === max) {
         useQuantiles = true;
     } else if (isFinite(p10) && isFinite(p90)) {
@@ -318,7 +441,7 @@ function applyMetric(metricSlug, stats) {
     // Precompute quantile edges if needed
     let qEdges = null;
     if (useQuantiles) {
-        const arr = Object.values(values).map(v => Number(v)).filter(v => isFinite(v)).sort((a,b)=>a-b);
+        const arr = arrAll; // already sorted
         if (arr.length >= 5) {
             const idx = q => arr[Math.max(0, Math.min(arr.length-1, Math.floor(arr.length*q)))];
             qEdges = [idx(0.05), idx(0.25), idx(0.5), idx(0.75), idx(0.95)];
@@ -337,8 +460,7 @@ function applyMetric(metricSlug, stats) {
             else if (val <= qEdges[2]) t = 0.5;
             else if (val <= qEdges[3]) t = 0.7;
             else t = 0.9;
-            const light = 92 - 55*t;
-            return 'hsl(210,70%,' + light.toFixed(1) + '%)';
+            return colorFromT(t);
         }
         return colorScale(Number(v), min, max);
     };
@@ -348,16 +470,94 @@ function applyMetric(metricSlug, stats) {
     const lg = L.control({position:'bottomright'});
     const meta = metricMeta.get(metricSlug) || {name: metricSlug};
     const disp = document.getElementById('currentMetricDisplay');
-    if (disp) disp.textContent = meta.name + ' (min ' + stats.min.toFixed(2) + ', max ' + stats.max.toFixed(2) + ')';
-    lg.onAdd = () => { const div = L.DomUtil.create('div',''); div.id='legend'; if (useQuantiles && qEdges) { div.innerHTML = '<strong>' + meta.name + '</strong><br>Quantile bins (approx):<br>' + qEdges.map((q,i)=> (i? '&nbsp;':'') + (i<qEdges.length-1? q.toFixed(2) : ('≥ ' + q.toFixed(2)))).join('') + buildRamp(qEdges[0], qEdges[qEdges.length-1]); } else { div.innerHTML = '<strong>' + meta.name + '</strong><br>Min: ' + stats.min.toFixed(2) + '<br>Max: ' + stats.max.toFixed(2) + buildRamp(stats.min, stats.max); } return div; };
+    const modeLabel = currentMode === 'lag' ? ' (Spatial Lag)' : '';
+    if (disp) disp.textContent = meta.name + modeLabel + ' (min ' + (isFinite(min)?min.toFixed(2):'—') + ', max ' + (isFinite(max)?max.toFixed(2):'—') + ')';
+    lg.onAdd = () => {
+        const div = L.DomUtil.create('div',''); div.id='legend';
+        if (useQuantiles && qEdges) {
+            div.innerHTML = '<strong>' + meta.name + '</strong><br>Quantile bins (approx):<br>' +
+                qEdges.map((q,i)=> (i? '&nbsp;':'') + (i<qEdges.length-1? q.toFixed(2) : ('≥ ' + q.toFixed(2)))).join('') +
+                buildRamp(qEdges[0], qEdges[qEdges.length-1]);
+        } else {
+            div.innerHTML = '<strong>' + meta.name + '</strong><br>Min: ' + (isFinite(min)?min.toFixed(2):'—') + '<br>Max: ' + (isFinite(max)?max.toFixed(2):'—') + buildRamp(min, max);
+        }
+        return div;
+    };
     lg.addTo(map);
 }
 function loadMetric(metricSlug, stats) {
     if (!tractLayer) { console.warn('Geometry layer not ready yet.'); return; }
-    if (metricsCache.has(metricSlug)) { applyMetric(metricSlug, stats); return; }
-    fetchJSON(ASSET_ROOT + '/metrics/' + metricSlug + '.json').then(data => { metricsCache.set(metricSlug, data); applyMetric(metricSlug, stats); });
+    const key = cacheKey(metricSlug, currentMode);
+    if (metricsCache.has(key)) { applyMetric(metricSlug, stats); return; }
+    const path = currentMode === 'lag' ? (ASSET_ROOT + '/metrics/' + metricSlug + '__lag.json')
+                                      : (ASSET_ROOT + '/metrics/' + metricSlug + '.json');
+    fetchJSON(path).then(data => {
+        metricsCache.set(key, data);
+        // Load skip reasons if in lag mode
+        if (currentMode === 'lag') {
+            const skipPath = ASSET_ROOT + '/metrics/' + metricSlug + '__lag_skip.json';
+            fetchJSON(skipPath).then(skipData => {
+                skipReasonsCache.set(metricSlug, skipData);
+                applyMetric(metricSlug, stats);
+            }).catch(() => {
+                // No skip file, proceed anyway
+                applyMetric(metricSlug, stats);
+            });
+        } else {
+            applyMetric(metricSlug, stats);
+        }
+    })
+    .catch(err => {
+        if (currentMode === 'lag') {
+            const warn = document.getElementById('detail');
+            if (warn) warn.innerHTML = '<span style="color:#b00">Lag variant not available for this metric.</span>';
+        }
+    });
 }
-function buildUI() { const catContainer = document.getElementById('categories'); catContainer.innerHTML=''; indexData.categories.forEach(cat => { const wrap=document.createElement('div'); wrap.className='category'; const h=document.createElement('h3'); h.textContent=cat.category; h.onclick=()=>{ mDiv.style.display = mDiv.style.display==='none'?'block':'none'; }; const mDiv=document.createElement('div'); mDiv.className='metrics'; cat.metrics.forEach(m => { metricMeta.set(m.slug, {name:m.name, stats:m.stats}); const btn=document.createElement('button'); btn.className='metric-btn'; btn.textContent=m.name; btn.onclick=()=>loadMetric(m.slug, m.stats); mDiv.appendChild(btn); }); wrap.appendChild(h); wrap.appendChild(mDiv); catContainer.appendChild(wrap); }); }
+function buildUI() {
+    const catContainer = document.getElementById('categories');
+    catContainer.innerHTML='';
+    indexData.categories.forEach(cat => {
+        const wrap=document.createElement('div');
+        wrap.className='category';
+        const h=document.createElement('h3');
+        h.textContent=cat.category;
+        h.onclick=()=>{ mDiv.style.display = mDiv.style.display==='none'?'block':'none'; };
+        const mDiv=document.createElement('div');
+        mDiv.className='metrics';
+        cat.metrics.forEach(m => {
+            const metaStats = (currentMode==='lag' && m.lagStats)? m.lagStats : m.stats;
+            metricMeta.set(m.slug, {name:m.name, stats:metaStats, lagStats:m.lagStats||null});
+            const btn=document.createElement('button');
+            btn.className='metric-btn';
+            btn.textContent=m.name + (m.lagStats?'' : '');
+            btn.onclick=()=>{
+                const stats = (currentMode==='lag' && m.lagStats)? m.lagStats : m.stats;
+                loadMetric(m.slug, stats);
+            };
+            mDiv.appendChild(btn);
+        });
+        wrap.appendChild(h);
+        wrap.appendChild(mDiv);
+        catContainer.appendChild(wrap);
+    });
+    const toggle = document.getElementById('lagToggle');
+    if (toggle && !toggle._wired) {
+        toggle._wired = true;
+        toggle.addEventListener('change', () => {
+            currentMode = toggle.checked ? 'lag' : 'raw';
+            // Refresh current metric if selected
+            try {
+                buildUI(); // refresh to update stats references
+                if (currentMetric) {
+                    const meta = metricMeta.get(currentMetric);
+                    const stats = (currentMode==='lag' && meta && meta.lagStats)? meta.lagStats : (meta? meta.stats : null);
+                    if (stats) loadMetric(currentMetric, stats);
+                }
+            } catch(_) {}
+        });
+    }
+}
 function filterMetrics(q) { q=q.toLowerCase(); document.querySelectorAll('.metric-btn').forEach(btn=>{ btn.style.display = btn.textContent.toLowerCase().includes(q)?'block':'none'; }); }
 document.getElementById('search').addEventListener('input', e => filterMetrics(e.target.value));
 fetchJSON(ASSET_ROOT + '/metrics_index.json').then(idx => { 
@@ -397,14 +597,19 @@ fetchJSON(ASSET_ROOT + '/tracts.geojson').then(gj => {
 // Load golf courses overlay (if present)
 fetchJSON(ASSET_ROOT + '/golf_courses.geojson').then(gj => {
     coursesLayer = L.geoJSON(gj, {
-        pointToLayer: (feature, latlng) => L.circleMarker(latlng, {radius:5, color:'#b71c1c', weight:1, fillColor:'#e53935', fillOpacity:0.95}),
+        pointToLayer: (feature, latlng) => {
+            // Render all golf course markers in red for consistency
+            const style = {radius:5, color:'#b71c1c', weight:1, fillColor:'#e53935', fillOpacity:0.95};
+            return L.circleMarker(latlng, style);
+        },
         onEachFeature: (f,l) => {
             const p = f.properties || {};
             const title = p.name || 'Golf Course';
             const addr = p.address ? ('<div>'+p.address+(p.city?(', '+p.city):'')+'</div>') : '';
             const meta = [p.access, p.holes?('Holes: '+p.holes):null, p.par?('Par: '+p.par):null].filter(Boolean).join(' · ');
+            const nb = Number(p.nearby) === 1 ? '<div><small style="color:#b71c1c">Nearby (outside city boundary)</small></div>' : '';
             const links = (p.website||p.url)?('<div style="margin-top:4px">'+(p.website?('<a href="'+p.website+'" target="_blank">Website</a>'):'') + (p.website&&p.url?' | ':'') + (p.url?('<a href="'+p.url+'" target="_blank">Link</a>'):'') + '</div>') : '';
-            l.bindPopup('<b>'+title+'</b><br>'+addr+(meta?('<small>'+meta+'</small>'):'')+links);
+            l.bindPopup('<b>'+title+'</b><br>'+addr+(meta?('<small>'+meta+'</small>'):'')+nb+links);
         }
     }).addTo(map);
     try { coursesLayer.bringToFront(); } catch(_) {}
@@ -416,9 +621,18 @@ function showDetail(feature) {
     const ct=feature.properties.CTUID; const panel=document.getElementById('detail'); if (!indexData) { panel.innerHTML='Loading categories…'; return; }
     if (!currentMetric) { panel.innerHTML = '<strong>Tract: ' + ct + '</strong><br><em>Select a metric to see its value.</em>'; return; }
     const meta = metricMeta.get(currentMetric) || {name: currentMetric};
-    const vals = metricsCache.get(currentMetric) || {};
+    const key = cacheKey(currentMetric, currentMode);
+    const vals = metricsCache.get(key) || {};
     const v = vals[ct];
-    panel.innerHTML = '<strong>Tract: ' + ct + '</strong><br><div><b>'+ meta.name + ':</b> ' + formatNum(v) + '</div>';
+    let valueDisplay = formatNum(v);
+    if (currentMode === 'lag' && (v == null || !isFinite(v))) {
+        const skipReasons = skipReasonsCache.get(currentMetric) || {};
+        const reason = skipReasons[ct];
+        if (reason) {
+            valueDisplay = '<em style="color:#999">Skipped: ' + reason + '</em>';
+        }
+    }
+    panel.innerHTML = '<strong>Tract: ' + ct + '</strong><br><div><b>'+ meta.name + ':</b> ' + valueDisplay + '</div>';
 }
 
 function showHover(feature, layer) {
@@ -426,9 +640,18 @@ function showHover(feature, layer) {
     let content = 'Tract: ' + ct;
     if (currentMetric) {
         const meta = metricMeta.get(currentMetric) || {name: currentMetric};
-        const vals = metricsCache.get(currentMetric) || {};
+        const key = cacheKey(currentMetric, currentMode);
+        const vals = metricsCache.get(key) || {};
         const v = vals[ct];
-        content = '<div><b>' + meta.name + '</b><br>' + formatNum(v) + '</div>';
+        let valueDisplay = formatNum(v);
+        if (currentMode === 'lag' && (v == null || !isFinite(v))) {
+            const skipReasons = skipReasonsCache.get(currentMetric) || {};
+            const reason = skipReasons[ct];
+            if (reason) {
+                valueDisplay = '<em style="color:#999">Skipped: ' + reason + '</em>';
+            }
+        }
+        content = '<div><b>' + meta.name + '</b><br>' + valueDisplay + '</div>';
     } else {
         content = '<em>Select a metric…</em>';
     }
@@ -451,10 +674,13 @@ def main():
     parser.add_argument('city', help='City name, e.g., Vancouver')
     parser.add_argument('province', help='Province name, e.g., British Columbia')
     parser.add_argument('--tolerance', type=float, default=40.0, help='Geometry simplify tolerance (meters)')
+    parser.add_argument('--verbose', action='store_true', help='Enable verbose exposure diagnostics and skip-reason prints')
+    parser.add_argument('--skip-lag', action='store_true', help='Skip spatial lag computations for faster build')
     args = parser.parse_args()
 
     data_root = Path('data') / 'censusShape'
-    build_assets(args.city, args.province, data_root=data_root, out_root=Path('maps'), tolerance=args.tolerance)
+    build_assets(args.city, args.province, data_root=data_root, out_root=Path('maps'), 
+                 tolerance=args.tolerance, verbose=args.verbose, skip_lag=args.skip_lag)
 
 
 if __name__ == '__main__':

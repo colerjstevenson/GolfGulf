@@ -1,0 +1,39 @@
+############################
+# Project Specific Ignores #
+############################
+# Ignore all contents of the data directory
+# Trailing slash ensures only the folder, not matching files named 'data'
+data/
+
+########################
+# Basic Python Ignores #
+########################
+__pycache__/
+*.py[cod]
+*.so
+*.egg-info/
+*.egg
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Packaging / build artifacts
+build/
+dist/
+*.log
+# Compressed archives
+*.zip
+
+# Tooling / editor folders
+.vscode/
+.idea/
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# Environment / secrets (adjust as needed)
+.env
+.env.*
