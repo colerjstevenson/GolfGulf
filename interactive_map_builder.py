@@ -265,57 +265,81 @@ def build_assets(city: str, province: str, data_root: Path, out_root: Path, tole
     # Build golf courses layer (optional)
     try:
         print("Building golf courses GeoJSON…")
+        # Load polygon geometries from combined.geojson
+        combined_geojson = Path('data') / 'canada' / 'combined.geojson'
         courses_csv = Path('data') / 'canada' / 'Fully_Matched_Golf_Courses.csv'
-        if courses_csv.exists():
-            df = pd.read_csv(courses_csv)
-            # Drop invalid coords
-            df = df.dropna(subset=['latitude','longitude'])
-            # Build GeoDataFrame in WGS84
-            gpoints = gpd.GeoDataFrame(
-                df,
-                geometry=gpd.points_from_xy(df['longitude'].astype(float), df['latitude'].astype(float)),
-                crs='EPSG:4326'
-            )
-            # Reproject to boundary CRS for precise clip
-            gpoints_proj = gpoints.to_crs('EPSG:3347')
+        
+        if combined_geojson.exists():
+            # Load the polygon geometries (already in EPSG:3347)
+            golf_polys = gpd.read_file(combined_geojson)
+            
+            # Load CSV for metadata if available
+            metadata = {}
+            if courses_csv.exists():
+                df = pd.read_csv(courses_csv)
+                # Build metadata lookup by gcid if available, otherwise by name
+                if 'gcid' in df.columns:
+                    for _, row in df.iterrows():
+                        metadata[row.get('gcid', '')] = {
+                            'address': row.get('Address', ''),
+                            'city': row.get('City', ''),
+                            'access': row.get('AccessType', ''),
+                            'holes': row.get('NumHoles', ''),
+                            'par': row.get('Par', ''),
+                            'url': row.get('url', ''),
+                            'website': row.get('website', '')
+                        }
+            
+            # Reproject to boundary CRS for clipping
             city_poly = boundary.iloc[0].geometry
-            # Include courses within city and within a buffer around the city (nearby)
             buffer_m = 10000.0  # 10 km
             city_buffer = city_poly.buffer(buffer_m)
-            nearby = gpoints_proj[gpoints_proj.geometry.within(city_buffer)]
+            
+            # Clip to city + buffer
+            nearby = golf_polys[golf_polys.geometry.intersects(city_buffer)].copy()
+            
             # Mark which are strictly inside vs nearby-only
             inside_mask = nearby.geometry.within(city_poly)
-            nearby = nearby.copy()
-            nearby['nearby'] = (~inside_mask).astype(int)  # 1 if in buffer but outside city
-            inside = nearby
-            # Back to WGS84 for Leaflet
-            inside_wgs = inside.to_crs('EPSG:4326').copy()
-            # Keep only useful columns
-            keep_cols = ['CourseName','Address','City','AccessType','NumHoles','Par','url','website']
-            for c in keep_cols:
-                if c not in inside_wgs.columns:
-                    inside_wgs[c] = None
-            # Preserve the nearby flag
-            if 'nearby' not in inside_wgs.columns:
-                inside_wgs['nearby'] = 0
-            inside_wgs = inside_wgs[keep_cols + ['nearby', 'geometry']]
-            # Rename for nicer popups
-            inside_wgs = inside_wgs.rename(columns={
-                'CourseName':'name', 'Address':'address', 'City':'city', 'AccessType':'access',
-                'NumHoles':'holes', 'Par':'par', 'url':'url', 'website':'website'
-            })
-            inside_wgs.to_file(geo_out_dir / 'golf_courses.geojson', driver='GeoJSON')
-            # Log counts for inside vs nearby-only
+            nearby['nearby'] = (~inside_mask).astype(int)
+            
+            # Merge metadata if available
+            if metadata:
+                for idx, row in nearby.iterrows():
+                    gcid = row.get('gcid', '')
+                    if gcid in metadata:
+                        for key, val in metadata[gcid].items():
+                            nearby.at[idx, key] = val
+            
+            # Ensure required columns exist
+            for col in ['name', 'address', 'city', 'access', 'holes', 'par', 'url', 'website']:
+                if col not in nearby.columns:
+                    nearby[col] = None
+            
+            # If name not set, use the name from properties
+            if 'name' in nearby.columns and nearby['name'].isna().any():
+                nearby['name'] = nearby['name'].fillna(nearby.get('name', ''))
+            
+            # Convert to WGS84 for Leaflet
+            inside_wgs = nearby.to_crs('EPSG:4326')
+            
+            # Write to file
+            keep_cols = ['name', 'address', 'city', 'access', 'holes', 'par', 'url', 'website', 'nearby', 'geometry']
+            output_cols = [c for c in keep_cols if c in inside_wgs.columns]
+            inside_wgs[output_cols].to_file(geo_out_dir / 'golf_courses.geojson', driver='GeoJSON')
+            
+            # Log counts
             try:
                 total = len(inside_wgs)
                 nb_only = int(inside_wgs['nearby'].sum())
-                print(f"Wrote {total} golf course points ({nb_only} nearby outside boundary, {total-nb_only} inside city).")
+                print(f"Wrote {total} golf course polygons ({nb_only} nearby outside boundary, {total-nb_only} inside city).")
             except Exception:
-                print(f"Wrote {len(inside_wgs)} golf course points.")
+                print(f"Wrote {len(inside_wgs)} golf course polygons.")
         else:
-            print(f"Golf courses CSV not found at {courses_csv}; skipping.")
+            print(f"Golf courses geometry file not found at {combined_geojson}; skipping.")
     except Exception as e:
         print(f"Failed to build golf courses layer: {e}")
+        import traceback
+        traceback.print_exc()
 
     # Build HTML template
     print("Writing interactive map HTML…")
@@ -597,10 +621,15 @@ fetchJSON(ASSET_ROOT + '/tracts.geojson').then(gj => {
 // Load golf courses overlay (if present)
 fetchJSON(ASSET_ROOT + '/golf_courses.geojson').then(gj => {
     coursesLayer = L.geoJSON(gj, {
-        pointToLayer: (feature, latlng) => {
-            // Render all golf course markers in red for consistency
-            const style = {radius:5, color:'#b71c1c', weight:1, fillColor:'#e53935', fillOpacity:0.95};
-            return L.circleMarker(latlng, style);
+        style: (feature) => {
+            // Render all golf course polygons as translucent red shapes
+            return {
+                fillColor: '#e53935',
+                fillOpacity: 0.35,
+                color: '#b71c1c',
+                weight: 1.5,
+                opacity: 0.8
+            };
         },
         onEachFeature: (f,l) => {
             const p = f.properties || {};

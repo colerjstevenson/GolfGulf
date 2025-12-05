@@ -1,9 +1,25 @@
 ############################
 # Project Specific Ignores #
 ############################
-# Ignore all contents of the data directory
-# Trailing slash ensures only the folder, not matching files named 'data'
+# Ignore all contents of the data directory except essential JSON files and web_assets
 data/
+!data/city_demographics.json
+!data/city_amenities.json
+!data/censusShape/
+data/censusShape/*
+# But allow web_assets folders and their contents
+!data/censusShape/*/web_assets/
+!data/censusShape/*/web_assets/**
+
+# Large GeoJSON and CSV files
+*.geojson
+*.csv
+*.shp
+*.shx
+*.dbf
+*.prj
+golf_data.zip
+golf_courses_map.html
 
 ########################
 # Basic Python Ignores #

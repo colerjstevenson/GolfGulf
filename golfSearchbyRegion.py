@@ -83,15 +83,15 @@ def fetch_golf_courses(subregion_name: str, polygon):
 # Main
 # -----------------------
 def main():
-    province_name = "Alberta, Canada"
-    output_prefix = province_name.split(",")[0].lower().replace(" ", "_")
+    region_name = "Alberta, Canada"
+    output_prefix = region_name.split(",")[0].lower().replace(" ", "_")
 
-    logging.info(f"Starting golf course collection for {province_name}")
+    logging.info(f"Starting golf course collection for {region_name}")
 
     try:
         # Get subregions
-        print(f"Fetching subregions in {province_name}...")
-        subregions = get_subregions(province_name)
+        print(f"Fetching subregions in {region_name}...")
+        subregions = get_subregions(region_name)
         if subregions.empty:
             print("No subregions found. Exiting.")
             return
@@ -169,7 +169,7 @@ def main():
         except Exception as e:
             print(f"Warning: Failed to create map overlay: {e}")
 
-        print(f"Done! Found {len(gdf)} golf courses in {province_name}.")
+        print(f"Done! Found {len(gdf)} golf courses in {region_name}.")
         logging.info(f"Completed successfully with {len(gdf)} entries.")
 
     except Exception as e:

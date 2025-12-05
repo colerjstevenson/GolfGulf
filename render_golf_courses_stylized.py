@@ -232,7 +232,52 @@ def draw_linestring(ctx: cairo.Context, geom, extent: Tuple[float,float,float,fl
     except Exception:
         pass
 
+def create_base_map(width: int, height: int, na_poly, extent: Tuple[float,float,float,float]) -> cairo.ImageSurface:
+    """
+    Create the base map without flags (paper + fairway + coastlines + outline).
+    This is cached so flags can be added quickly without redrawing everything.
+    """
+    # Cairo surface for paper background
+    surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, width, height)
+    ctx = cairo.Context(surface)
+
+    # Layer 1: Paper background
+    draw_paper_background(ctx, width, height)
+    
+    # Layer 2: Create fairway stripes with PIL-based masking
+    fairway_img = draw_fairway_stripes(width, height, na_poly, extent)
+    
+    # Convert Cairo surface to PIL to composite the fairway
+    buf = surface.get_data()
+    paper_img = Image.frombuffer("RGBA", (width, height), buf, "raw", "BGRA", 0, 1)
+    
+    # Composite fairway onto paper
+    paper_img = Image.alpha_composite(paper_img, fairway_img)
+    
+    # Convert back to Cairo surface for remaining layers
+    surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, width, height)
+    ctx = cairo.Context(surface)
+    
+    # Copy PIL image data to Cairo surface
+    paper_data = paper_img.tobytes("raw", "BGRA")
+    surface_data = surface.get_data()
+    surface_data[:] = paper_data
+
+    # Layer 3: Draw coastlines and borders on top of fairway
+    draw_coastlines_and_borders(ctx, extent, width, height)
+    
+    # Layer 4: Draw NA polygon outline on top
+    ctx.save()
+    path_from_polygon(ctx, na_poly, extent, width, height)
+    ctx.set_source_rgb(0.11, 0.37, 0.13)
+    ctx.set_line_width(2.5)
+    ctx.stroke()
+    ctx.restore()
+    
+    return surface
+
 def draw_flag(ctx: cairo.Context, x: float, y: float, scale: float = 1.0):
+    """Draw a golf flag at (x, y) with optional scale."""
     # Slight jitter for hand-drawn feel
     jx = np.random.uniform(-1.5, 1.5)
     jy = np.random.uniform(-1.0, 1.0)
@@ -269,6 +314,7 @@ def main():
     parser.add_argument("--width", type=int, default=1200, help="Canvas width in pixels")
     parser.add_argument("--height", type=int, default=1600, help="Canvas height in pixels")
     parser.add_argument("--flag-scale", type=float, default=1.4, help="Scale for flag size")
+    parser.add_argument("--no-cache", action="store_true", help="Regenerate base map instead of using cache")
     args = parser.parse_args()
 
     defaults = [
@@ -287,48 +333,47 @@ def main():
     # Use the full geometry (handles both Polygon and MultiPolygon)
     na_poly = na_geom
 
-    # Cairo surface for paper background
+    # Cairo surface
     out_path = Path(args.output)
     out_path.parent.mkdir(parents=True, exist_ok=True)
+    
+    # Base map cache path
+    cache_dir = out_path.parent / ".cache"
+    cache_path = cache_dir / f"base_map_{args.width}x{args.height}.png"
+    
+    # Load or create base map
+    if cache_path.exists() and not args.no_cache:
+        print(f"Loading cached base map from {cache_path}")
+        base_img = Image.open(cache_path).convert("RGBA")
+        # Convert PIL to Cairo surface
+        base_surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, args.width, args.height)
+        base_data = base_img.tobytes("raw", "BGRA")
+        surface_data = base_surface.get_data()
+        surface_data[:] = base_data
+    else:
+        print("Generating base map (paper + fairway + coastlines)...")
+        base_surface = create_base_map(args.width, args.height, na_poly, extent)
+        # Save base map to cache
+        cache_dir.mkdir(parents=True, exist_ok=True)
+        base_surface.write_to_png(str(cache_path))
+        print(f"Cached base map to {cache_path}")
+    
+    # Create final surface from base map
     surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, args.width, args.height)
     ctx = cairo.Context(surface)
-
-    # Layer 1: Paper background
-    draw_paper_background(ctx, args.width, args.height)
     
-    # Layer 2: Create fairway stripes with PIL-based masking
-    fairway_img = draw_fairway_stripes(args.width, args.height, na_poly, extent)
-    
-    # Convert Cairo surface to PIL to composite the fairway
-    buf = surface.get_data()
-    paper_img = Image.frombuffer("RGBA", (args.width, args.height), buf, "raw", "BGRA", 0, 1)
-    
-    # Composite fairway onto paper
-    paper_img = Image.alpha_composite(paper_img, fairway_img)
-    
-    # Convert back to Cairo surface for remaining layers
-    surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, args.width, args.height)
-    ctx = cairo.Context(surface)
-    
-    # Copy PIL image data to Cairo surface
-    paper_data = paper_img.tobytes("raw", "BGRA")
+    # Copy base map data to new surface
+    buf = base_surface.get_data()
+    base_img = Image.frombuffer("RGBA", (args.width, args.height), buf, "raw", "BGRA", 0, 1)
+    final_data = base_img.tobytes("raw", "BGRA")
     surface_data = surface.get_data()
-    surface_data[:] = paper_data
+    surface_data[:] = final_data
 
-    # Layer 3: Draw coastlines and borders on top of fairway
-    draw_coastlines_and_borders(ctx, extent, args.width, args.height)
-    
-    # Layer 4: Draw NA polygon outline on top
-    ctx.save()
-    path_from_polygon(ctx, na_poly, extent, args.width, args.height)
-    ctx.set_source_rgb(0.11, 0.37, 0.13)
-    ctx.set_line_width(2.5)
-    ctx.stroke()
-    ctx.restore()
-
-    # Layer 5: Draw flags
+    # Layer 5: Draw flags (sorted top-to-bottom to avoid overlap)
+    print("Drawing flags...")
     np.random.seed(7)
-    for _, r in pts.iterrows():
+    pts_sorted = pts.sort_values('latitude', ascending=False).reset_index(drop=True)
+    for _, r in pts_sorted.iterrows():
         lon = float(r['longitude']); lat = float(r['latitude'])
         x,y = lonlat_to_canvas(lon,lat,extent,args.width,args.height)
         draw_flag(ctx, x, y, scale=args.flag_scale)
