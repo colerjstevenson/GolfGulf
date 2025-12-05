@@ -9,6 +9,9 @@ data/**
 # Allow censusShape directories and city subfolders
 !data/censusShape/
 !data/censusShape/*/
+# Allow city data files and caches
+!data/censusShape/*/*.csv
+!data/censusShape/*/*.json
 # Allow web_assets (geojson etc.) inside each city
 !data/censusShape/*/web_assets/
 !data/censusShape/*/web_assets/**
