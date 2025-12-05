@@ -1,3 +1,80 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:44f20de54010c82f71816dfdd47faa48d81f64918809e10c86f4a03b3bf414d4
-size 6116
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='utf-8' />
+<title>Canadian City Census Explorer</title>
+<meta name='viewport' content='width=device-width,initial-scale=1' />
+<style>:
+    :root { --bg:#f7f9fb; --accent:#1565c0; }
+    body{margin:0;font-family:system-ui,Arial,sans-serif;background:var(--bg);color:#222;}
+    header{padding:16px 20px;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.08);position:sticky;top:0;}
+    h1{margin:0;font-size:20px;}
+    #search{width:100%;padding:8px 10px;margin-top:10px;font-size:14px;border:1px solid #bbb;border-radius:6px;}
+    main{max-width:1100px;margin:24px auto;padding:0 20px 40px;}
+    .grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));}
+    .city-btn{display:flex;flex-direction:column;align-items:flex-start;padding:14px 12px;background:#fff;border:1px solid #d5d9dd;border-radius:10px;text-decoration:none;color:#222;font-weight:600;font-size:14px;position:relative;transition:.15s box-shadow,.15s transform;}
+    .city-btn:hover{box-shadow:0 2px 6px rgba(0,0,0,.12);transform:translateY(-2px);}
+    .meta{font-size:11px;font-weight:400;opacity:.75;margin-top:4px;}
+    .badge{position:absolute;top:8px;right:8px;background:#1565c0;color:#fff;font-size:11px;padding:2px 6px;border-radius:12px;}
+    .empty{text-align:center;padding:30px;font-size:14px;color:#666;}
+    @media (prefers-color-scheme: dark){body{background:#12171c;color:#e7edf2;}header{background:#1d252c;} .city-btn{background:#1d252c;border-color:#2d3740;color:#e7edf2;} .city-btn:hover{box-shadow:0 2px 6px rgba(0,0,0,.6);} #search{background:#1d252c;border-color:#2d3740;color:#e7edf2;} .badge{background:#1e88e5;}}
+</style>
+</head>
+<body>
+<header><h1>Canadian City Census Explorer</h1><input id='search' type='text' placeholder='Filter cities…' /></header>
+<main>
+<section style='margin-bottom:26px'>
+<h2 style='margin:0 0 10px 0;font-size:16px;'>Maps</h2>
+<div id='grid' class='grid'>
+<a class='city-btn' href='../golf_courses_map.html' data-name='world'>World Golf Courses<span class='meta'>Global map</span></a>
+
+<a class='city-btn' href='calgary_interactive_map.html' data-name='calgary'>Calgary<span class='meta'>Golf courses: 63</span></a>
+<a class='city-btn' href='edmonton_interactive_map.html' data-name='edmonton'>Edmonton<span class='meta'>Golf courses: 48</span></a>
+<a class='city-btn' href='halifax_interactive_map.html' data-name='halifax'>Halifax<span class='meta'>Golf courses: 13</span></a>
+<a class='city-btn' href='hamilton_interactive_map.html' data-name='hamilton'>Hamilton<span class='meta'>Golf courses: 59</span></a>
+<a class='city-btn' href='kitchener_interactive_map.html' data-name='kitchener'>Kitchener<span class='meta'>Golf courses: 21</span></a>
+<a class='city-btn' href='london_interactive_map.html' data-name='london'>London<span class='meta'>Golf courses: 31</span></a>
+<a class='city-btn' href='montreal_interactive_map.html' data-name='montreal'>Montreal<span class='meta'>Golf courses: 40</span></a>
+<a class='city-btn' href='ottawa_interactive_map.html' data-name='ottawa'>Ottawa<span class='meta'>Golf courses: 65</span></a>
+<a class='city-btn' href='quebec_city_interactive_map.html' data-name='quebec city'>Quebec City<span class='meta'>Golf courses: 26</span></a>
+<a class='city-btn' href='regina_interactive_map.html' data-name='regina'>Regina<span class='meta'>Golf courses: 17</span></a>
+<a class='city-btn' href='saskatoon_interactive_map.html' data-name='saskatoon'>Saskatoon<span class='meta'>Golf courses: 10</span></a>
+<a class='city-btn' href='toronto_interactive_map.html' data-name='toronto'>Toronto<span class='meta'>Golf courses: 56</span></a>
+<a class='city-btn' href='vancouver_interactive_map.html' data-name='vancouver'>Vancouver<span class='meta'>Golf courses: 32</span></a>
+<a class='city-btn' href='victoria_interactive_map.html' data-name='victoria'>Victoria<span class='meta'>Golf courses: 13</span></a>
+<a class='city-btn' href='winnipeg_interactive_map.html' data-name='winnipeg'>Winnipeg<span class='meta'>Golf courses: 27</span></a>
+</div>
+<div id='empty' class='empty' style='display:none'>No cities match your search.</div>
+<section>
+<h2 style='margin:0 0 10px 0;font-size:16px;'>Visuals</h2>
+<div class='grid'>
+  <a class='city-btn' href='../visualize_city_amenities.html' data-name='amenities'>City Amenities Dashboard
+    <span class='meta'>Interactive comparison of amenities data</span>
+  </a>
+  <a class='city-btn' href='../visualize_golf_vs_demographics.html' data-name='golf vs demographics'>Golf vs Demographics
+    <span class='meta'>Golf course counts vs ACS metrics</span>
+  </a>
+  <a class='city-btn' href='../visualize_golf_animation.html' data-name='golf animation'>Golf Courses Animation
+    <span class='meta'>Animated GIF of golf courses</span>
+  </a>
+  <a class='city-btn' href='../visualize_golf_courses_across_cities.html' data-name='golf courses across cities'>Golf Courses Across Cities
+    <span class='meta'>Grouped bars: count & area</span>
+  </a>
+</div>
+</section>
+
+<section>
+<h2 style='margin:0 0 10px 0;font-size:16px;'>Data</h2>
+<div class='grid'>
+  <a class='city-btn' href='../data/city_amenities.json' data-name='amenities json'>Raw Amenities JSON
+    <span class='meta'>Download data/city_amenities.json</span>
+  </a>
+  <a class='city-btn' href='../data/city_demographics.json' data-name='demographics json'>City Demographics JSON
+    <span class='meta'>Requires ACS fetch</span>
+  </a>
+</div>
+</section>
+</main>
+<footer style='text-align:center;padding:30px 20px;font-size:12px;color:#555'>Generated landing page. Serve: <code>python -m http.server 8000</code></footer>
+<script>const s=document.getElementById('search');s.addEventListener('input',()=>{const q=s.value.toLowerCase();let vis=0;document.querySelectorAll('#grid .city-btn').forEach(b=>{const n=b.getAttribute('data-name');const show=!q||n.includes(q);b.style.display=show?'flex':'none';if(show)vis++;});document.getElementById('empty').style.display=vis?'none':'block';});</script>
+</body></html>

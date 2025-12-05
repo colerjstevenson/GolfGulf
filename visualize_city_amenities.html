@@ -1,3 +1,525 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:1f72bc7f42473ad14798f44a3da01ffc95992a9a482972ae23ac62e60c00ee11
-size 19318
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>City Amenities Comparison</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            padding: 30px;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .controls {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        label {
+            font-weight: 600;
+            color: #555;
+            font-size: 14px;
+        }
+        
+        select {
+            padding: 10px 15px;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            font-size: 16px;
+            background: white;
+            cursor: pointer;
+            min-width: 200px;
+            transition: all 0.3s;
+        }
+        
+        select:hover {
+            border-color: #764ba2;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.2);
+        }
+        
+        select:focus {
+            outline: none;
+            border-color: #764ba2;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .toggle-container {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .toggle-btn {
+            padding: 10px 20px;
+            border: 2px solid #667eea;
+            background: white;
+            color: #667eea;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+        
+        .toggle-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: #764ba2;
+        }
+        
+        .toggle-btn:hover:not(.active) {
+            background: #f0f0f0;
+        }
+        
+        .chart-container {
+            position: relative;
+            height: 500px;
+            margin-top: 20px;
+        }
+
+        .chart-container.tight {
+            height: 420px;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .stat-value {
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+        
+        .error {
+            background: #ff6b6b;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 40px;
+            font-size: 1.2em;
+            color: #667eea;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏙️ City Amenities Dashboard</h1>
+        
+        <div id="error" class="error" style="display: none;"></div>
+        <div id="loading" class="loading">Loading data...</div>
+        
+        <div id="content" style="display: none;">
+            <div class="controls">
+                <div class="control-group">
+                    <label for="citySelect">Select City:</label>
+                    <select id="citySelect">
+                        <option value="">Choose a city...</option>
+                    </select>
+                </div>
+                
+                <div class="control-group">
+                    <label>View Mode:</label>
+                    <div class="toggle-container">
+                        <button class="toggle-btn active" data-mode="count">Count</button>
+                        <button class="toggle-btn" data-mode="area">Total Area</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="chart-container">
+                <canvas id="amenitiesChart"></canvas>
+            </div>
+            
+            <div class="stats" id="statsContainer"></div>
+
+            <div class="chart-container tight" style="margin-top:32px;">
+                <canvas id="golfComparisonChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let amenitiesData = {};
+        let currentCity = '';
+        let currentMode = 'count';
+        let chart = null;
+        let golfChart = null;
+        
+        // Load data
+        async function loadData() {
+            const url = 'data/city_amenities.json';
+            try {
+                const response = await fetch(url, { cache: 'no-store' });
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status} for ${url}`);
+                }
+                const json = await response.json();
+                if (!json || Object.keys(json).length === 0) {
+                    throw new Error('JSON loaded but empty');
+                }
+                amenitiesData = json;
+                initializeApp();
+            } catch (error) {
+                document.getElementById('loading').style.display = 'none';
+                const isFileProtocol = location.protocol === 'file:';
+                const hint = isFileProtocol
+                    ? 'This page is opened via file://. Use a local web server so fetch() can read JSON.'
+                    : 'Verify the JSON exists at data/city_amenities.json relative to this HTML.';
+                document.getElementById('error').textContent = `Error loading data/city_amenities.json: ${error.message}. ${hint}`;
+                document.getElementById('error').style.display = 'block';
+            }
+        }
+        
+        function initializeApp() {
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('content').style.display = 'block';
+            
+            // Populate city selector
+            const citySelect = document.getElementById('citySelect');
+            const cities = Object.keys(amenitiesData).sort();
+            
+            cities.forEach(city => {
+                const option = document.createElement('option');
+                option.value = city;
+                option.textContent = city;
+                citySelect.appendChild(option);
+            });
+            
+            // Set first city as default
+            if (cities.length > 0) {
+                currentCity = cities[0];
+                citySelect.value = currentCity;
+                updateChart();
+            }
+
+            renderGolfComparison();
+            
+            // Event listeners
+            citySelect.addEventListener('change', (e) => {
+                currentCity = e.target.value;
+                updateChart();
+            });
+            
+            document.querySelectorAll('.toggle-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+                    e.target.classList.add('active');
+                    currentMode = e.target.dataset.mode;
+                    updateChart();
+                });
+            });
+        }
+
+        function renderGolfComparison() {
+            if (!amenitiesData || Object.keys(amenitiesData).length === 0) return;
+
+            const cities = Object.keys(amenitiesData).sort();
+            const labels = [];
+            const counts = [];
+            const areasKm2 = [];
+
+            cities.forEach(city => {
+                const golf = amenitiesData[city]['golf courses'];
+                if (!golf) return;
+                labels.push(city);
+                counts.push(golf.count || 0);
+                areasKm2.push((golf.total_area_m2 || 0) / 1_000_000);
+            });
+
+            const ctx = document.getElementById('golfComparisonChart').getContext('2d');
+            if (golfChart) golfChart.destroy();
+
+            golfChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels,
+                    datasets: [
+                        {
+                            label: 'Golf Courses (count)',
+                            data: counts,
+                            backgroundColor: 'rgba(102, 126, 234, 0.7)',
+                            borderColor: 'rgba(102, 126, 234, 1)',
+                            borderWidth: 2,
+                        },
+                        {
+                            label: 'Golf Courses Area (km²)',
+                            data: areasKm2,
+                            backgroundColor: 'rgba(118, 75, 162, 0.7)',
+                            borderColor: 'rgba(118, 75, 162, 1)',
+                            borderWidth: 2,
+                        },
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: { mode: 'index', intersect: false },
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Golf Courses by City (count vs area)',
+                            font: { size: 18, weight: 'bold' }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: (ctx) => {
+                                    const label = ctx.dataset.label || '';
+                                    const val = ctx.parsed.y;
+                                    if (label.includes('Area')) {
+                                        return `${label}: ${val.toFixed(2)} km²`;
+                                    }
+                                    return `${label}: ${val}`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: { display: true, text: 'Value' }
+                        },
+                        x: {
+                            ticks: { maxRotation: 45, minRotation: 45 }
+                        }
+                    }
+                }
+            });
+        }
+        
+        function updateChart() {
+            if (!currentCity || !amenitiesData[currentCity]) return;
+            
+            const cityData = amenitiesData[currentCity];
+            const amenityTypes = Object.keys(cityData).sort();
+            
+            // Prepare data
+            const labels = amenityTypes.map(type => {
+                // Capitalize first letter of each word
+                return type.split(' ').map(word => 
+                    word.charAt(0).toUpperCase() + word.slice(1)
+                ).join(' ');
+            });
+            
+            const values = amenityTypes.map(type => {
+                if (currentMode === 'count') {
+                    return cityData[type].count;
+                } else {
+                    // Convert m² to hectares for better readability
+                    return (cityData[type].total_area_m2 / 10000).toFixed(2);
+                }
+            });
+            
+            // Generate colors
+            const colors = amenityTypes.map((_, index) => {
+                const hue = (index * 360 / amenityTypes.length);
+                return `hsla(${hue}, 70%, 60%, 0.8)`;
+            });
+            
+            const borderColors = amenityTypes.map((_, index) => {
+                const hue = (index * 360 / amenityTypes.length);
+                return `hsla(${hue}, 70%, 50%, 1)`;
+            });
+            
+            // Update or create chart
+            const ctx = document.getElementById('amenitiesChart').getContext('2d');
+            
+            if (chart) {
+                chart.destroy();
+            }
+            
+            chart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: currentMode === 'count' ? 'Number of Locations' : 'Total Area (hectares)',
+                        data: values,
+                        backgroundColor: colors,
+                        borderColor: borderColors,
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        title: {
+                            display: true,
+                            text: `${currentCity} - ${currentMode === 'count' ? 'Amenity Count' : 'Total Area'}`,
+                            font: {
+                                size: 18,
+                                weight: 'bold'
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const amenityType = amenityTypes[context.dataIndex];
+                                    const data = cityData[amenityType];
+                                    if (currentMode === 'count') {
+                                        return `Count: ${data.count}`;
+                                    } else {
+                                        const hectares = (data.total_area_m2 / 10000).toFixed(2);
+                                        const sqKm = (data.total_area_m2 / 1000000).toFixed(2);
+                                        return [
+                                            `Area: ${hectares} hectares`,
+                                            `(${sqKm} km²)`
+                                        ];
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                font: {
+                                    size: 12
+                                }
+                            },
+                            title: {
+                                display: true,
+                                text: currentMode === 'count' ? 'Count' : 'Area (hectares)',
+                                font: {
+                                    size: 14,
+                                    weight: 'bold'
+                                }
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                font: {
+                                    size: 11
+                                },
+                                maxRotation: 45,
+                                minRotation: 45
+                            }
+                        }
+                    }
+                }
+            });
+            
+            updateStats();
+        }
+        
+        function updateStats() {
+            if (!currentCity || !amenitiesData[currentCity]) return;
+            
+            const cityData = amenitiesData[currentCity];
+            const amenityTypes = Object.keys(cityData);
+            
+            let totalCount = 0;
+            let totalArea = 0;
+            let maxCount = { type: '', count: 0 };
+            let maxArea = { type: '', area: 0 };
+            
+            amenityTypes.forEach(type => {
+                const count = cityData[type].count;
+                const area = cityData[type].total_area_m2;
+                
+                totalCount += count;
+                totalArea += area;
+                
+                if (count > maxCount.count) {
+                    maxCount = { type, count };
+                }
+                
+                if (area > maxArea.area) {
+                    maxArea = { type, area };
+                }
+            });
+            
+            const statsHtml = `
+                <div class="stat-card">
+                    <div class="stat-value">${totalCount.toLocaleString()}</div>
+                    <div class="stat-label">Total Amenities</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">${(totalArea / 1000000).toFixed(2)}</div>
+                    <div class="stat-label">Total Area (km²)</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">${maxCount.type.charAt(0).toUpperCase() + maxCount.type.slice(1)}</div>
+                    <div class="stat-label">Most Common (${maxCount.count})</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">${maxArea.type.charAt(0).toUpperCase() + maxArea.type.slice(1)}</div>
+                    <div class="stat-label">Largest Area (${(maxArea.area / 1000000).toFixed(2)} km²)</div>
+                </div>
+            `;
+            
+            document.getElementById('statsContainer').innerHTML = statsHtml;
+        }
+        
+        // Load data on page load
+        loadData();
+    </script>
+</body>
+</html>

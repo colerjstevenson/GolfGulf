@@ -1,3 +1,205 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:1c6a414b13f6772fefe7d7f7de393fb3f5dce385e65d0ec54065d90ef742dd53
-size 7278
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Golf Courses Across Cities</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: #0b1222;
+      --ink: #e6edf7;
+      --muted: #93a4c4;
+      --accent1: #667eea;
+      --accent2: #764ba2;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Space Grotesk', 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: radial-gradient(circle at 20% 20%, rgba(61, 214, 208, 0.08), transparent 32%),
+                  radial-gradient(circle at 80% 0%, rgba(255, 107, 107, 0.08), transparent 30%),
+                  var(--bg);
+      color: var(--ink);
+      min-height: 100vh;
+    }
+    .shell {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 32px 18px 48px;
+    }
+    header { margin-bottom: 16px; }
+    h1 { margin: 0 0 6px 0; font-size: 28px; letter-spacing: -0.01em; }
+    p { margin: 0; color: var(--muted); }
+    .panel {
+      background: var(--panel);
+      border: 1px solid #16213a;
+      border-radius: 14px;
+      padding: 16px;
+      box-shadow: 0 14px 40px rgba(0,0,0,0.25);
+    }
+    .chart-container {
+      position: relative;
+      height: 520px;
+      margin-top: 12px;
+    }
+    .error { color: #ff9a9a; margin-top: 10px; }
+    .actions { margin-top: 12px; display: flex; gap: 10px; flex-wrap: wrap; }
+    a.pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(102, 126, 234, 0.18);
+      color: var(--ink);
+      padding: 8px 12px;
+      border-radius: 999px;
+      text-decoration: none;
+      border: 1px solid #1f2a44;
+      font-size: 14px;
+      transition: transform 0.12s ease, box-shadow 0.12s ease;
+    }
+    a.pill:hover { transform: translateY(-1px); box-shadow: 0 8px 16px rgba(0,0,0,0.25); }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header>
+      <h1>Golf Courses Across Cities</h1>
+      <p>Grouped bars: golf course count and total area (km²) for every city in the amenities dataset.</p>
+    </header>
+    <section class="panel">
+      <div class="chart-container">
+        <canvas id="golfCoursesChart"></canvas>
+      </div>
+      <div id="error" class="error" style="display:none"></div>
+      <div class="actions">
+        <a class="pill" href="visualize_city_amenities.html">Back to Amenities Dashboard</a>
+        <a class="pill" href="visualize_golf_vs_demographics.html">Golf vs Demographics Scatter</a>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    let golfChart = null;
+
+    async function loadData() {
+      const url = 'data/city_amenities.json';
+      try {
+        const resp = await fetch(url, { cache: 'no-store' });
+        if (!resp.ok) throw new Error(`HTTP ${resp.status} for ${url}`);
+        const data = await resp.json();
+        renderChart(data);
+      } catch (err) {
+        const el = document.getElementById('error');
+        el.textContent = `Failed to load ${url}: ${err.message}`;
+        el.style.display = 'block';
+      }
+    }
+
+    function renderChart(data) {
+      const CANADIAN_CITIES = ["Toronto","Montreal","Vancouver","Calgary","Edmonton","Ottawa","Winnipeg"];
+      const US_CITIES = [
+        "New York","Los Angeles","Chicago","Houston","Phoenix","Philadelphia","San Antonio","San Diego",
+        "Palm Springs","Scottsdale","Dallas","San Jose","Austin","Jacksonville","Fort Worth","Columbus",
+        "Indianapolis","Charlotte","San Francisco","Seattle","Denver","Washington","Boston","Nashville",
+        "Detroit","Portland","Las Vegas"
+      ];
+
+      const labels = [...CANADIAN_CITIES, ...US_CITIES];
+      const counts = [];
+      const areas = [];
+
+      labels.forEach(city => {
+        const golf = data[city]?.['golf courses'];
+        counts.push(golf?.count || 0);
+        areas.push(golf ? (golf.total_area_m2 || 0) / 1_000_000 : 0);
+      });
+
+      const ctx = document.getElementById('golfCoursesChart').getContext('2d');
+      if (golfChart) golfChart.destroy();
+
+      golfChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels,
+          datasets: [
+            {
+              label: 'Golf Courses (count)',
+              data: counts,
+              backgroundColor: 'rgba(102, 126, 234, 0.75)',
+              borderColor: 'rgba(102, 126, 234, 1)',
+              borderWidth: 2,
+            },
+            {
+              label: 'Golf Courses Area (km²)',
+              data: areas,
+              backgroundColor: 'rgba(118, 75, 162, 0.75)',
+              borderColor: 'rgba(118, 75, 162, 1)',
+              borderWidth: 2,
+            },
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          // Render at native device pixel ratio for crisper text/lines
+          devicePixelRatio: window.devicePixelRatio || 2,
+          interaction: { mode: 'index', intersect: false },
+          plugins: {
+            title: {
+              display: true,
+              text: 'Golf Courses by City (Count vs Area)',
+              font: { size: 20, weight: 'bold' },
+              color: '#e6edf7'
+            },
+            legend: {
+              labels: { color: '#e6edf7', font: { size: 13, weight: '600' } }
+            },
+            tooltip: {
+              bodyFont: { size: 13 },
+              titleFont: { size: 13 },
+              callbacks: {
+                label: (ctx) => {
+                  const label = ctx.dataset.label || '';
+                  const val = ctx.parsed.y;
+                  if (label.includes('Area')) return `${label}: ${val.toFixed(2)} km²`;
+                  return `${label}: ${val}`;
+                }
+              }
+            }
+          },
+          plugins: {
+          },
+          scales: {
+            x: {
+              ticks: { color: '#e6edf7', maxRotation: 45, minRotation: 45, font: { size: 11 } },
+              grid: {
+                color: (ctx) => {
+                  const idx = ctx.tick && ctx.tick.index !== undefined ? ctx.tick.index : -1;
+                  if (idx === -1) return '#1e293b';
+                  // Add a divider before the first US city
+                  const dividerIndex = CANADIAN_CITIES.length;
+                  if (idx === dividerIndex) return '#ffffff33';
+                  return '#1e293b';
+                }
+              }
+            },
+            y: {
+              beginAtZero: true,
+              ticks: { color: '#e6edf7', font: { size: 12 } },
+              title: { display: true, text: 'Value', color: '#e6edf7', font: { size: 13, weight: '600' } },
+              grid: { color: '#1e293b' }
+            }
+          }
+        }
+      });
+    }
+
+    loadData();
+  </script>
+</body>
+</html>

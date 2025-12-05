@@ -1,3 +1,82 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:832999cb08304a80ad738a992ef9c417e92933c011ff9878886dc4d08060ca49
-size 2837
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Animated Golf Courses</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: #0b1222;
+      --ink: #e6edf7;
+      --muted: #93a4c4;
+      --accent: #3dd6d0;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Space Grotesk', 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: radial-gradient(circle at 20% 20%, rgba(61, 214, 208, 0.08), transparent 32%),
+                  radial-gradient(circle at 80% 0%, rgba(255, 107, 107, 0.08), transparent 30%),
+                  var(--bg);
+      color: var(--ink);
+      min-height: 100vh;
+    }
+    .shell {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 32px 18px 48px;
+    }
+    header { margin-bottom: 16px; }
+    h1 { margin: 0 0 6px 0; font-size: 28px; letter-spacing: -0.01em; }
+    p { margin: 0; color: var(--muted); }
+    .panel {
+      background: var(--panel);
+      border: 1px solid #16213a;
+      border-radius: 14px;
+      padding: 16px;
+      box-shadow: 0 14px 40px rgba(0,0,0,0.25);
+      text-align: center;
+    }
+    .panel img {
+      width: 100%;
+      max-width: 840px;
+      border-radius: 10px;
+      border: 1px solid #1f2a44;
+      box-shadow: 0 12px 24px rgba(0,0,0,0.35);
+    }
+    .links { margin-top: 12px; display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(61, 214, 208, 0.14);
+      color: var(--ink);
+      text-decoration: none;
+      border: 1px solid #1f2a44;
+      transition: transform 0.12s ease, box-shadow 0.12s ease;
+    }
+    .pill:hover { transform: translateY(-1px); box-shadow: 0 8px 18px rgba(0,0,0,0.25); }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header>
+      <h1>Animated Golf Courses</h1>
+      <p>Looping visualization of golf course locations. Right-click the image to save or copy.</p>
+    </header>
+    <section class="panel">
+      <img src="images/golf_courses_animated.gif" alt="Animated golf courses" />
+      <div class="links">
+        <a class="pill" href="images/golf_courses_animated.gif" download>Download GIF</a>
+        <a class="pill" href="visualize_golf_vs_demographics.html">Back to Demographics Scatter</a>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
