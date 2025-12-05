@@ -20,6 +20,7 @@ data/censusShape/*
 *.prj
 golf_data.zip
 golf_courses_map.html
+cache/
 
 ########################
 # Basic Python Ignores #
