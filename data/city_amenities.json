@@ -1,3 +1,1838 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:2fdd2412915422acf6a740291c9c878592a761b61a4c69e6cd4584b8f16c4971
-size 39735
+{
+  "Vancouver": {
+    "parks": {
+      "count": 294,
+      "total_area_m2": 20616128.684209578
+    },
+    "hockey rinks": {
+      "count": 2,
+      "total_area_m2": 3474.850900953935
+    },
+    "pools": {
+      "count": 942,
+      "total_area_m2": 69080.71493068345
+    },
+    "golf courses": {
+      "count": 12,
+      "total_area_m2": 3900674.6480224053
+    },
+    "playgrounds": {
+      "count": 522,
+      "total_area_m2": 144972.96537037095
+    },
+    "sports centres": {
+      "count": 91,
+      "total_area_m2": 500711.0622442426
+    },
+    "basketball courts": {
+      "count": 193,
+      "total_area_m2": 52290.033060706686
+    },
+    "tennis courts": {
+      "count": 374,
+      "total_area_m2": 139392.33866659715
+    },
+    "soccer fields": {
+      "count": 99,
+      "total_area_m2": 475349.5770405616
+    },
+    "baseball fields": {
+      "count": 74,
+      "total_area_m2": 246822.51995335348
+    },
+    "libraries": {
+      "count": 24,
+      "total_area_m2": 12102.28033133359
+    },
+    "hospitals": {
+      "count": 6,
+      "total_area_m2": 437735.959200795
+    },
+    "Schools": {
+      "count": 173,
+      "total_area_m2": 2771755.9547936087
+    }
+  },
+  "Toronto": {
+    "parks": {
+      "count": 1694,
+      "total_area_m2": 74628934.2337985
+    },
+    "pools": {
+      "count": 1078,
+      "total_area_m2": 117981.63373747573
+    },
+    "hockey rinks": {
+      "count": 29,
+      "total_area_m2": 119169.59268514815
+    },
+    "golf courses": {
+      "count": 22,
+      "total_area_m2": 10456040.103728008
+    },
+    "playgrounds": {
+      "count": 2171,
+      "total_area_m2": 691603.9308473964
+    },
+    "sports centres": {
+      "count": 169,
+      "total_area_m2": 648472.7839931368
+    },
+    "basketball courts": {
+      "count": 337,
+      "total_area_m2": 115552.96479859157
+    },
+    "tennis courts": {
+      "count": 702,
+      "total_area_m2": 568440.4753634111
+    },
+    "soccer fields": {
+      "count": 545,
+      "total_area_m2": 2115705.622564267
+    },
+    "baseball fields": {
+      "count": 718,
+      "total_area_m2": 1708659.3769936138
+    },
+    "libraries": {
+      "count": 138,
+      "total_area_m2": 91367.01796720548
+    },
+    "hospitals": {
+      "count": 37,
+      "total_area_m2": 1999375.161480904
+    },
+    "Schools": {
+      "count": 939,
+      "total_area_m2": 17790426.99399037
+    }
+  },
+  "Montreal": {
+    "parks": {
+      "count": 1216,
+      "total_area_m2": 26869107.092595853
+    },
+    "pools": {
+      "count": 388,
+      "total_area_m2": 65486.0321978123
+    },
+    "hockey rinks": {
+      "count": 28,
+      "total_area_m2": 46025.2542764798
+    },
+    "golf courses": {
+      "count": 10,
+      "total_area_m2": 8662273.508052243
+    },
+    "playgrounds": {
+      "count": 1208,
+      "total_area_m2": 338104.08507725
+    },
+    "sports centres": {
+      "count": 307,
+      "total_area_m2": 1449304.0958819853
+    },
+    "basketball courts": {
+      "count": 206,
+      "total_area_m2": 73680.23170661819
+    },
+    "tennis courts": {
+      "count": 309,
+      "total_area_m2": 250359.40793615527
+    },
+    "soccer fields": {
+      "count": 327,
+      "total_area_m2": 1151385.606856183
+    },
+    "baseball fields": {
+      "count": 280,
+      "total_area_m2": 1825623.009373602
+    },
+    "libraries": {
+      "count": 79,
+      "total_area_m2": 40856.49685082741
+    },
+    "hospitals": {
+      "count": 46,
+      "total_area_m2": 2849040.419232659
+    },
+    "Schools": {
+      "count": 566,
+      "total_area_m2": 6585157.5286162505
+    }
+  },
+  "Calgary": {
+    "parks": {
+      "count": 2693,
+      "total_area_m2": 75782088.47608985
+    },
+    "pools": {
+      "count": 86,
+      "total_area_m2": 16730.24635930241
+    },
+    "hockey rinks": {
+      "count": 17,
+      "total_area_m2": 44813.27944995426
+    },
+    "golf courses": {
+      "count": 46,
+      "total_area_m2": 15834627.469435897
+    },
+    "sports centres": {
+      "count": 117,
+      "total_area_m2": 433782.7802539945
+    },
+    "tennis courts": {
+      "count": 224,
+      "total_area_m2": 185804.05306568593
+    },
+    "basketball courts": {
+      "count": 177,
+      "total_area_m2": 64708.850344213
+    },
+    "playgrounds": {
+      "count": 1538,
+      "total_area_m2": 447904.28580720734
+    },
+    "libraries": {
+      "count": 26,
+      "total_area_m2": 32553.27085489387
+    },
+    "soccer fields": {
+      "count": 477,
+      "total_area_m2": 2375469.159584448
+    },
+    "baseball fields": {
+      "count": 546,
+      "total_area_m2": 1903241.8240798316
+    },
+    "Schools": {
+      "count": 420,
+      "total_area_m2": 8012860.467124281
+    },
+    "hospitals": {
+      "count": 11,
+      "total_area_m2": 814559.9600939666
+    }
+  },
+  "Edmonton": {
+    "playgrounds": {
+      "count": 666,
+      "total_area_m2": 362173.6878288844
+    },
+    "tennis courts": {
+      "count": 124,
+      "total_area_m2": 81533.69953859222
+    },
+    "soccer fields": {
+      "count": 620,
+      "total_area_m2": 2278250.67835438
+    },
+    "baseball fields": {
+      "count": 365,
+      "total_area_m2": 1203939.7655668058
+    },
+    "libraries": {
+      "count": 27,
+      "total_area_m2": 33132.409802399234
+    },
+    "parks": {
+      "count": 969,
+      "total_area_m2": 42329188.6423056
+    },
+    "basketball courts": {
+      "count": 176,
+      "total_area_m2": 73703.56981058935
+    },
+    "sports centres": {
+      "count": 61,
+      "total_area_m2": 297844.12951206823
+    },
+    "golf courses": {
+      "count": 24,
+      "total_area_m2": 10847573.31514707
+    },
+    "hockey rinks": {
+      "count": 34,
+      "total_area_m2": 48372.22173876837
+    },
+    "pools": {
+      "count": 23,
+      "total_area_m2": 9982.835439527387
+    },
+    "Schools": {
+      "count": 369,
+      "total_area_m2": 9582811.227040559
+    },
+    "hospitals": {
+      "count": 25,
+      "total_area_m2": 1351147.117105272
+    }
+  },
+  "Ottawa": {
+    "parks": {
+      "count": 1203,
+      "total_area_m2": 38972729.664243385
+    },
+    "playgrounds": {
+      "count": 2225,
+      "total_area_m2": 455482.1254016338
+    },
+    "basketball courts": {
+      "count": 404,
+      "total_area_m2": 111295.3255742423
+    },
+    "golf courses": {
+      "count": 37,
+      "total_area_m2": 25120740.01692699
+    },
+    "soccer fields": {
+      "count": 711,
+      "total_area_m2": 2730364.648746368
+    },
+    "tennis courts": {
+      "count": 246,
+      "total_area_m2": 310904.7883161827
+    },
+    "hockey rinks": {
+      "count": 30,
+      "total_area_m2": 94675.6754510199
+    },
+    "sports centres": {
+      "count": 85,
+      "total_area_m2": 575694.8012664277
+    },
+    "baseball fields": {
+      "count": 355,
+      "total_area_m2": 1349677.0274266936
+    },
+    "pools": {
+      "count": 895,
+      "total_area_m2": 69558.47590225837
+    },
+    "libraries": {
+      "count": 43,
+      "total_area_m2": 32767.66171840208
+    },
+    "Schools": {
+      "count": 397,
+      "total_area_m2": 10068228.650073826
+    },
+    "hospitals": {
+      "count": 10,
+      "total_area_m2": 968875.1413227015
+    }
+  },
+  "Winnipeg": {
+    "pools": {
+      "count": 624,
+      "total_area_m2": 43387.73537615332
+    },
+    "golf courses": {
+      "count": 19,
+      "total_area_m2": 7315773.015431149
+    },
+    "playgrounds": {
+      "count": 835,
+      "total_area_m2": 215450.62979340984
+    },
+    "sports centres": {
+      "count": 53,
+      "total_area_m2": 468387.32648527116
+    },
+    "basketball courts": {
+      "count": 89,
+      "total_area_m2": 37829.99731601653
+    },
+    "tennis courts": {
+      "count": 106,
+      "total_area_m2": 81163.3321716692
+    },
+    "baseball fields": {
+      "count": 289,
+      "total_area_m2": 1066653.663063841
+    },
+    "soccer fields": {
+      "count": 262,
+      "total_area_m2": 1043404.9497114356
+    },
+    "libraries": {
+      "count": 25,
+      "total_area_m2": 22778.51060452475
+    },
+    "hockey rinks": {
+      "count": 55,
+      "total_area_m2": 91920.55622140573
+    },
+    "parks": {
+      "count": 1037,
+      "total_area_m2": 28792737.318963043
+    },
+    "Schools": {
+      "count": 336,
+      "total_area_m2": 5667812.059985539
+    },
+    "hospitals": {
+      "count": 13,
+      "total_area_m2": 757575.501451948
+    }
+  },
+  "New York": {
+    "tennis courts": {
+      "count": 1162,
+      "total_area_m2": 733553.2346975486
+    },
+    "playgrounds": {
+      "count": 1853,
+      "total_area_m2": 1574647.6444431436
+    },
+    "hockey rinks": {
+      "count": 2,
+      "total_area_m2": 5581.920366951549
+    },
+    "parks": {
+      "count": 2063,
+      "total_area_m2": 107465586.55428149
+    },
+    "pools": {
+      "count": 46804,
+      "total_area_m2": 1311625.6757607777
+    },
+    "golf courses": {
+      "count": 26,
+      "total_area_m2": 10895267.086538319
+    },
+    "basketball courts": {
+      "count": 2095,
+      "total_area_m2": 668153.8181085184
+    },
+    "sports centres": {
+      "count": 263,
+      "total_area_m2": 4037668.464740018
+    },
+    "baseball fields": {
+      "count": 908,
+      "total_area_m2": 3552447.198013019
+    },
+    "libraries": {
+      "count": 254,
+      "total_area_m2": 179497.33026867485
+    },
+    "soccer fields": {
+      "count": 331,
+      "total_area_m2": 1261405.0095790727
+    },
+    "Schools": {
+      "count": 1804,
+      "total_area_m2": 8821838.140985534
+    },
+    "hospitals": {
+      "count": 115,
+      "total_area_m2": 4470858.515606599
+    }
+  },
+  "Los Angeles": {
+    "hockey rinks": {
+      "count": 2,
+      "total_area_m2": 0.0
+    },
+    "golf courses": {
+      "count": 36,
+      "total_area_m2": 18180063.60070573
+    },
+    "sports centres": {
+      "count": 153,
+      "total_area_m2": 1467055.5545219649
+    },
+    "basketball courts": {
+      "count": 912,
+      "total_area_m2": 407284.55741898436
+    },
+    "pools": {
+      "count": 11349,
+      "total_area_m2": 669728.4603991664
+    },
+    "soccer fields": {
+      "count": 184,
+      "total_area_m2": 1213670.2656746926
+    },
+    "baseball fields": {
+      "count": 451,
+      "total_area_m2": 2322728.7506730473
+    },
+    "libraries": {
+      "count": 110,
+      "total_area_m2": 123206.1200569584
+    },
+    "tennis courts": {
+      "count": 1542,
+      "total_area_m2": 811051.3636411743
+    },
+    "playgrounds": {
+      "count": 489,
+      "total_area_m2": 250087.11077130778
+    },
+    "parks": {
+      "count": 667,
+      "total_area_m2": 36662163.89637236
+    },
+    "hospitals": {
+      "count": 62,
+      "total_area_m2": 5118790.464298594
+    },
+    "Schools": {
+      "count": 1096,
+      "total_area_m2": 27536336.50289355
+    }
+  },
+  "Chicago": {
+    "parks": {
+      "count": 884,
+      "total_area_m2": 39251921.01099215
+    },
+    "pools": {
+      "count": 400,
+      "total_area_m2": 71242.66951161902
+    },
+    "playgrounds": {
+      "count": 1111,
+      "total_area_m2": 569340.2668027126
+    },
+    "sports centres": {
+      "count": 284,
+      "total_area_m2": 715050.6274198657
+    },
+    "soccer fields": {
+      "count": 210,
+      "total_area_m2": 769987.9277175895
+    },
+    "baseball fields": {
+      "count": 580,
+      "total_area_m2": 1953155.3529410888
+    },
+    "libraries": {
+      "count": 107,
+      "total_area_m2": 151720.6249743189
+    },
+    "golf courses": {
+      "count": 17,
+      "total_area_m2": 6363018.379496042
+    },
+    "tennis courts": {
+      "count": 648,
+      "total_area_m2": 302271.5457163877
+    },
+    "basketball courts": {
+      "count": 403,
+      "total_area_m2": 224835.35040478042
+    },
+    "hockey rinks": {
+      "count": 2,
+      "total_area_m2": 2232.068399897772
+    },
+    "hospitals": {
+      "count": 41,
+      "total_area_m2": 1746225.7970920107
+    },
+    "Schools": {
+      "count": 1100,
+      "total_area_m2": 12540507.980312943
+    }
+  },
+  "Houston": {
+    "parks": {
+      "count": 825,
+      "total_area_m2": 161702398.61688527
+    },
+    "golf courses": {
+      "count": 30,
+      "total_area_m2": 24128615.95697895
+    },
+    "sports centres": {
+      "count": 512,
+      "total_area_m2": 7112975.764320154
+    },
+    "basketball courts": {
+      "count": 289,
+      "total_area_m2": 207535.87342722208
+    },
+    "tennis courts": {
+      "count": 954,
+      "total_area_m2": 846108.5763500608
+    },
+    "baseball fields": {
+      "count": 447,
+      "total_area_m2": 3030667.989378987
+    },
+    "soccer fields": {
+      "count": 413,
+      "total_area_m2": 2244751.414293497
+    },
+    "playgrounds": {
+      "count": 767,
+      "total_area_m2": 349145.7040099895
+    },
+    "hockey rinks": {
+      "count": 1,
+      "total_area_m2": 4124.7666762174595
+    },
+    "pools": {
+      "count": 3074,
+      "total_area_m2": 332310.4378799909
+    },
+    "libraries": {
+      "count": 56,
+      "total_area_m2": 129804.9696087738
+    },
+    "Schools": {
+      "count": 597,
+      "total_area_m2": 32379672.77578692
+    },
+    "hospitals": {
+      "count": 56,
+      "total_area_m2": 4692628.026939271
+    }
+  },
+  "Phoenix": {
+    "parks": {
+      "count": 741,
+      "total_area_m2": 47224456.850771815
+    },
+    "pools": {
+      "count": 105083,
+      "total_area_m2": 280859.0720995217
+    },
+    "hockey rinks": {
+      "count": 0,
+      "total_area_m2": 0.0
+    },
+    "golf courses": {
+      "count": 41,
+      "total_area_m2": 25873973.313131716
+    },
+    "playgrounds": {
+      "count": 604,
+      "total_area_m2": 304058.65058675606
+    },
+    "tennis courts": {
+      "count": 485,
+      "total_area_m2": 419267.4016302185
+    },
+    "soccer fields": {
+      "count": 225,
+      "total_area_m2": 1333213.2190184724
+    },
+    "sports centres": {
+      "count": 71,
+      "total_area_m2": 10851473.974822303
+    },
+    "libraries": {
+      "count": 27,
+      "total_area_m2": 41329.99989856548
+    },
+    "basketball courts": {
+      "count": 708,
+      "total_area_m2": 455472.4054181398
+    },
+    "baseball fields": {
+      "count": 345,
+      "total_area_m2": 2581539.068920727
+    },
+    "hospitals": {
+      "count": 43,
+      "total_area_m2": 3372169.921393235
+    },
+    "Schools": {
+      "count": 548,
+      "total_area_m2": 25386866.03292796
+    }
+  },
+  "Philadelphia": {
+    "parks": {
+      "count": 519,
+      "total_area_m2": 43454265.805135936
+    },
+    "golf courses": {
+      "count": 11,
+      "total_area_m2": 3677577.3160066446
+    },
+    "hockey rinks": {
+      "count": 3,
+      "total_area_m2": 6649.073798610692
+    },
+    "sports centres": {
+      "count": 68,
+      "total_area_m2": 1255780.8764306388
+    },
+    "basketball courts": {
+      "count": 563,
+      "total_area_m2": 211399.4169220802
+    },
+    "tennis courts": {
+      "count": 429,
+      "total_area_m2": 238649.24708798953
+    },
+    "baseball fields": {
+      "count": 458,
+      "total_area_m2": 1676700.6428985698
+    },
+    "playgrounds": {
+      "count": 730,
+      "total_area_m2": 389158.21476068225
+    },
+    "libraries": {
+      "count": 76,
+      "total_area_m2": 67392.55703121083
+    },
+    "soccer fields": {
+      "count": 149,
+      "total_area_m2": 709053.8488181906
+    },
+    "pools": {
+      "count": 3171,
+      "total_area_m2": 155642.33842277975
+    },
+    "hospitals": {
+      "count": 36,
+      "total_area_m2": 1883584.1053253666
+    },
+    "Schools": {
+      "count": 591,
+      "total_area_m2": 6241176.15458467
+    }
+  },
+  "San Antonio": {
+    "parks": {
+      "count": 427,
+      "total_area_m2": 77026658.87042569
+    },
+    "pools": {
+      "count": 829,
+      "total_area_m2": 155933.6053297448
+    },
+    "hockey rinks": {
+      "count": 1,
+      "total_area_m2": 8074.023047948877
+    },
+    "golf courses": {
+      "count": 25,
+      "total_area_m2": 18851678.00664598
+    },
+    "sports centres": {
+      "count": 80,
+      "total_area_m2": 1923282.0686239828
+    },
+    "tennis courts": {
+      "count": 841,
+      "total_area_m2": 529185.304906236
+    },
+    "soccer fields": {
+      "count": 222,
+      "total_area_m2": 1686191.0938146277
+    },
+    "baseball fields": {
+      "count": 309,
+      "total_area_m2": 2432227.144102949
+    },
+    "libraries": {
+      "count": 38,
+      "total_area_m2": 99773.96146709388
+    },
+    "playgrounds": {
+      "count": 469,
+      "total_area_m2": 322230.0822290817
+    },
+    "basketball courts": {
+      "count": 403,
+      "total_area_m2": 193500.44587811
+    },
+    "hospitals": {
+      "count": 60,
+      "total_area_m2": 5321522.936209747
+    },
+    "Schools": {
+      "count": 495,
+      "total_area_m2": 28000794.056150727
+    }
+  },
+  "San Diego": {
+    "hockey rinks": {
+      "count": 0,
+      "total_area_m2": 0.0
+    },
+    "playgrounds": {
+      "count": 483,
+      "total_area_m2": 296109.03452632274
+    },
+    "basketball courts": {
+      "count": 436,
+      "total_area_m2": 317558.1645645698
+    },
+    "tennis courts": {
+      "count": 771,
+      "total_area_m2": 412541.8025423347
+    },
+    "soccer fields": {
+      "count": 100,
+      "total_area_m2": 668242.630003439
+    },
+    "baseball fields": {
+      "count": 345,
+      "total_area_m2": 2228452.012340145
+    },
+    "parks": {
+      "count": 607,
+      "total_area_m2": 46029340.22915227
+    },
+    "pools": {
+      "count": 2527,
+      "total_area_m2": 231557.03819325668
+    },
+    "sports centres": {
+      "count": 63,
+      "total_area_m2": 355412.79417063104
+    },
+    "golf courses": {
+      "count": 48,
+      "total_area_m2": 19564269.914166994
+    },
+    "libraries": {
+      "count": 71,
+      "total_area_m2": 71101.88484350473
+    },
+    "Schools": {
+      "count": 435,
+      "total_area_m2": 17738378.9905405
+    },
+    "hospitals": {
+      "count": 22,
+      "total_area_m2": 1776898.9926756031
+    }
+  },
+  "Palm Springs": {
+    "parks": {
+      "count": 20,
+      "total_area_m2": 723179.8274161705
+    },
+    "pools": {
+      "count": 624,
+      "total_area_m2": 28177.036774005755
+    },
+    "hockey rinks": {
+      "count": 0,
+      "total_area_m2": 0.0
+    },
+    "golf courses": {
+      "count": 10,
+      "total_area_m2": 5458595.286401846
+    },
+    "playgrounds": {
+      "count": 13,
+      "total_area_m2": 6960.412631530835
+    },
+    "sports centres": {
+      "count": 10,
+      "total_area_m2": 87803.33004095685
+    },
+    "basketball courts": {
+      "count": 7,
+      "total_area_m2": 2515.186062505751
+    },
+    "tennis courts": {
+      "count": 166,
+      "total_area_m2": 89051.5999098327
+    },
+    "soccer fields": {
+      "count": 6,
+      "total_area_m2": 63942.857044884164
+    },
+    "baseball fields": {
+      "count": 16,
+      "total_area_m2": 115707.86005468444
+    },
+    "libraries": {
+      "count": 2,
+      "total_area_m2": 4382.7676247620075
+    },
+    "Schools": {
+      "count": 9,
+      "total_area_m2": 439889.2355780343
+    },
+    "hospitals": {
+      "count": 1,
+      "total_area_m2": 104449.81292812874
+    }
+  },
+  "Scottsdale": {
+    "parks": {
+      "count": 86,
+      "total_area_m2": 16025861.334208302
+    },
+    "hockey rinks": {
+      "count": 0,
+      "total_area_m2": 0.0
+    },
+    "golf courses": {
+      "count": 35,
+      "total_area_m2": 29409369.818697724
+    },
+    "playgrounds": {
+      "count": 62,
+      "total_area_m2": 30004.247838783842
+    },
+    "basketball courts": {
+      "count": 91,
+      "total_area_m2": 48977.088343163385
+    },
+    "sports centres": {
+      "count": 39,
+      "total_area_m2": 88109.53417344809
+    },
+    "soccer fields": {
+      "count": 39,
+      "total_area_m2": 297423.5821010103
+    },
+    "libraries": {
+      "count": 4,
+      "total_area_m2": 19852.294522078017
+    },
+    "pools": {
+      "count": 1058,
+      "total_area_m2": 55244.061473063935
+    },
+    "baseball fields": {
+      "count": 88,
+      "total_area_m2": 691199.7127548254
+    },
+    "tennis courts": {
+      "count": 259,
+      "total_area_m2": 141276.46004321892
+    },
+    "Schools": {
+      "count": 63,
+      "total_area_m2": 3530125.467477903
+    },
+    "hospitals": {
+      "count": 8,
+      "total_area_m2": 649212.6317136153
+    }
+  },
+  "Dallas": {
+    "parks": {
+      "count": 445,
+      "total_area_m2": 77100689.06917478
+    },
+    "hockey rinks": {
+      "count": 0,
+      "total_area_m2": 0.0
+    },
+    "pools": {
+      "count": 707,
+      "total_area_m2": 84426.4692263318
+    },
+    "golf courses": {
+      "count": 21,
+      "total_area_m2": 19267564.87514702
+    },
+    "sports centres": {
+      "count": 38,
+      "total_area_m2": 776770.6097731034
+    },
+    "tennis courts": {
+      "count": 543,
+      "total_area_m2": 344996.43355329207
+    },
+    "soccer fields": {
+      "count": 207,
+      "total_area_m2": 1242972.6713084984
+    },
+    "baseball fields": {
+      "count": 181,
+      "total_area_m2": 1317375.5594011685
+    },
+    "playgrounds": {
+      "count": 403,
+      "total_area_m2": 182583.73162540363
+    },
+    "libraries": {
+      "count": 25,
+      "total_area_m2": 52642.56785782766
+    },
+    "basketball courts": {
+      "count": 183,
+      "total_area_m2": 66349.88662108633
+    },
+    "Schools": {
+      "count": 416,
+      "total_area_m2": 19731965.062964357
+    },
+    "hospitals": {
+      "count": 30,
+      "total_area_m2": 3337279.2025105706
+    }
+  },
+  "San Jose": {
+    "pools": {
+      "count": 1803,
+      "total_area_m2": 160231.24444756494
+    },
+    "parks": {
+      "count": 310,
+      "total_area_m2": 20476711.524484485
+    },
+    "golf courses": {
+      "count": 13,
+      "total_area_m2": 8820528.49360841
+    },
+    "sports centres": {
+      "count": 63,
+      "total_area_m2": 1229495.853576241
+    },
+    "hockey rinks": {
+      "count": 3,
+      "total_area_m2": 36058.77498505311
+    },
+    "baseball fields": {
+      "count": 289,
+      "total_area_m2": 1332880.8601781544
+    },
+    "tennis courts": {
+      "count": 412,
+      "total_area_m2": 182030.70685468757
+    },
+    "basketball courts": {
+      "count": 967,
+      "total_area_m2": 324942.8087568273
+    },
+    "libraries": {
+      "count": 36,
+      "total_area_m2": 52743.930418245895
+    },
+    "soccer fields": {
+      "count": 159,
+      "total_area_m2": 753726.2418011879
+    },
+    "playgrounds": {
+      "count": 757,
+      "total_area_m2": 233909.52021354216
+    },
+    "Schools": {
+      "count": 331,
+      "total_area_m2": 15302617.609179968
+    },
+    "hospitals": {
+      "count": 7,
+      "total_area_m2": 530218.3132360548
+    }
+  },
+  "Austin": {
+    "parks": {
+      "count": 495,
+      "total_area_m2": 83681902.16454752
+    },
+    "golf courses": {
+      "count": 21,
+      "total_area_m2": 13198232.991320245
+    },
+    "pools": {
+      "count": 3256,
+      "total_area_m2": 318483.1288959553
+    },
+    "playgrounds": {
+      "count": 486,
+      "total_area_m2": 232176.02101119352
+    },
+    "tennis courts": {
+      "count": 553,
+      "total_area_m2": 401014.5788789904
+    },
+    "baseball fields": {
+      "count": 157,
+      "total_area_m2": 1108830.056570734
+    },
+    "libraries": {
+      "count": 31,
+      "total_area_m2": 51188.86879441525
+    },
+    "hockey rinks": {
+      "count": 0,
+      "total_area_m2": 0.0
+    },
+    "soccer fields": {
+      "count": 175,
+      "total_area_m2": 1570948.717493275
+    },
+    "sports centres": {
+      "count": 97,
+      "total_area_m2": 7774537.07751424
+    },
+    "basketball courts": {
+      "count": 326,
+      "total_area_m2": 119359.77843954232
+    },
+    "Schools": {
+      "count": 259,
+      "total_area_m2": 15968769.751833031
+    },
+    "hospitals": {
+      "count": 25,
+      "total_area_m2": 2828808.6998651135
+    }
+  },
+  "Jacksonville": {
+    "parks": {
+      "count": 398,
+      "total_area_m2": 33953353.731032565
+    },
+    "golf courses": {
+      "count": 22,
+      "total_area_m2": 14080852.99081539
+    },
+    "playgrounds": {
+      "count": 333,
+      "total_area_m2": 199580.33937824558
+    },
+    "sports centres": {
+      "count": 28,
+      "total_area_m2": 324600.20797047345
+    },
+    "soccer fields": {
+      "count": 91,
+      "total_area_m2": 497104.0435409627
+    },
+    "baseball fields": {
+      "count": 325,
+      "total_area_m2": 2059639.9335618017
+    },
+    "libraries": {
+      "count": 29,
+      "total_area_m2": 73928.31131957097
+    },
+    "hockey rinks": {
+      "count": 0,
+      "total_area_m2": 0.0
+    },
+    "pools": {
+      "count": 1695,
+      "total_area_m2": 151229.76826686808
+    },
+    "basketball courts": {
+      "count": 264,
+      "total_area_m2": 161254.56143790035
+    },
+    "tennis courts": {
+      "count": 446,
+      "total_area_m2": 268195.97148579586
+    },
+    "Schools": {
+      "count": 297,
+      "total_area_m2": 16437096.467712063
+    },
+    "hospitals": {
+      "count": 33,
+      "total_area_m2": 3915274.474181562
+    }
+  },
+  "Fort Worth": {
+    "hockey rinks": {
+      "count": 0,
+      "total_area_m2": 0.0
+    },
+    "playgrounds": {
+      "count": 233,
+      "total_area_m2": 85038.25220415977
+    },
+    "sports centres": {
+      "count": 46,
+      "total_area_m2": 6712817.904837819
+    },
+    "basketball courts": {
+      "count": 71,
+      "total_area_m2": 33518.50337955354
+    },
+    "tennis courts": {
+      "count": 313,
+      "total_area_m2": 181122.76766020476
+    },
+    "soccer fields": {
+      "count": 82,
+      "total_area_m2": 502828.0535691732
+    },
+    "baseball fields": {
+      "count": 116,
+      "total_area_m2": 948768.6614144424
+    },
+    "golf courses": {
+      "count": 22,
+      "total_area_m2": 16101856.190553002
+    },
+    "pools": {
+      "count": 217,
+      "total_area_m2": 36438.378010054395
+    },
+    "libraries": {
+      "count": 14,
+      "total_area_m2": 23008.849944970632
+    },
+    "parks": {
+      "count": 353,
+      "total_area_m2": 51844943.69009266
+    },
+    "Schools": {
+      "count": 284,
+      "total_area_m2": 19467225.381426267
+    },
+    "hospitals": {
+      "count": 22,
+      "total_area_m2": 1564356.7573885887
+    }
+  },
+  "Columbus": {
+    "parks": {
+      "count": 439,
+      "total_area_m2": 38204459.88777752
+    },
+    "pools": {
+      "count": 671,
+      "total_area_m2": 70154.20699374935
+    },
+    "hockey rinks": {
+      "count": 3,
+      "total_area_m2": 30235.491009772253
+    },
+    "golf courses": {
+      "count": 13,
+      "total_area_m2": 10172740.489504848
+    },
+    "playgrounds": {
+      "count": 433,
+      "total_area_m2": 251848.46218867897
+    },
+    "sports centres": {
+      "count": 84,
+      "total_area_m2": 1701176.2087554126
+    },
+    "tennis courts": {
+      "count": 233,
+      "total_area_m2": 166966.67010854307
+    },
+    "soccer fields": {
+      "count": 152,
+      "total_area_m2": 1377523.0991015811
+    },
+    "baseball fields": {
+      "count": 208,
+      "total_area_m2": 1107507.0224932227
+    },
+    "basketball courts": {
+      "count": 171,
+      "total_area_m2": 71053.0157619907
+    },
+    "libraries": {
+      "count": 31,
+      "total_area_m2": 63022.645334812514
+    },
+    "hospitals": {
+      "count": 18,
+      "total_area_m2": 1327805.9117770041
+    },
+    "Schools": {
+      "count": 298,
+      "total_area_m2": 10954690.235660885
+    }
+  },
+  "Indianapolis": {
+    "pools": {
+      "count": 537,
+      "total_area_m2": 83062.17507404397
+    },
+    "parks": {
+      "count": 332,
+      "total_area_m2": 52660163.931930386
+    },
+    "hockey rinks": {
+      "count": 0,
+      "total_area_m2": 0.0
+    },
+    "golf courses": {
+      "count": 31,
+      "total_area_m2": 14658879.273076564
+    },
+    "sports centres": {
+      "count": 54,
+      "total_area_m2": 462618.42311332986
+    },
+    "basketball courts": {
+      "count": 189,
+      "total_area_m2": 108910.6635140579
+    },
+    "tennis courts": {
+      "count": 519,
+      "total_area_m2": 229543.43135962242
+    },
+    "baseball fields": {
+      "count": 253,
+      "total_area_m2": 1480188.0468001412
+    },
+    "libraries": {
+      "count": 37,
+      "total_area_m2": 52041.635015775566
+    },
+    "soccer fields": {
+      "count": 116,
+      "total_area_m2": 779220.2783769041
+    },
+    "playgrounds": {
+      "count": 497,
+      "total_area_m2": 307960.64047758456
+    },
+    "Schools": {
+      "count": 296,
+      "total_area_m2": 15028983.052756978
+    },
+    "hospitals": {
+      "count": 33,
+      "total_area_m2": 2400257.4929894437
+    }
+  },
+  "Charlotte": {
+    "parks": {
+      "count": 272,
+      "total_area_m2": 39985892.35274009
+    },
+    "pools": {
+      "count": 795,
+      "total_area_m2": 141435.6575838167
+    },
+    "golf courses": {
+      "count": 21,
+      "total_area_m2": 18700152.901867483
+    },
+    "sports centres": {
+      "count": 63,
+      "total_area_m2": 691078.7317026405
+    },
+    "tennis courts": {
+      "count": 549,
+      "total_area_m2": 501264.7024082873
+    },
+    "basketball courts": {
+      "count": 188,
+      "total_area_m2": 75219.212035592
+    },
+    "baseball fields": {
+      "count": 217,
+      "total_area_m2": 1523141.630575693
+    },
+    "libraries": {
+      "count": 24,
+      "total_area_m2": 42656.68329121807
+    },
+    "hockey rinks": {
+      "count": 0,
+      "total_area_m2": 0.0
+    },
+    "soccer fields": {
+      "count": 127,
+      "total_area_m2": 920417.4069731578
+    },
+    "playgrounds": {
+      "count": 464,
+      "total_area_m2": 222910.66187293638
+    },
+    "Schools": {
+      "count": 215,
+      "total_area_m2": 17400720.423045628
+    },
+    "hospitals": {
+      "count": 20,
+      "total_area_m2": 974097.906203907
+    }
+  },
+  "San Francisco": {
+    "parks": {
+      "count": 343,
+      "total_area_m2": 24276231.73346761
+    },
+    "pools": {
+      "count": 64,
+      "total_area_m2": 6471.777458366346
+    },
+    "hockey rinks": {
+      "count": 0,
+      "total_area_m2": 0.0
+    },
+    "golf courses": {
+      "count": 9,
+      "total_area_m2": 4840123.054904939
+    },
+    "sports centres": {
+      "count": 134,
+      "total_area_m2": 371474.0821413073
+    },
+    "basketball courts": {
+      "count": 418,
+      "total_area_m2": 147090.2366797188
+    },
+    "tennis courts": {
+      "count": 303,
+      "total_area_m2": 156166.19676531368
+    },
+    "soccer fields": {
+      "count": 89,
+      "total_area_m2": 316414.03688103287
+    },
+    "playgrounds": {
+      "count": 307,
+      "total_area_m2": 181996.88181571342
+    },
+    "baseball fields": {
+      "count": 129,
+      "total_area_m2": 398790.51486835687
+    },
+    "libraries": {
+      "count": 48,
+      "total_area_m2": 43238.7516692833
+    },
+    "Schools": {
+      "count": 270,
+      "total_area_m2": 2207789.4816810302
+    },
+    "hospitals": {
+      "count": 18,
+      "total_area_m2": 805080.7909175166
+    }
+  },
+  "Seattle": {
+    "parks": {
+      "count": 552,
+      "total_area_m2": 16556116.262347111
+    },
+    "pools": {
+      "count": 263,
+      "total_area_m2": 27016.387685705802
+    },
+    "golf courses": {
+      "count": 10,
+      "total_area_m2": 2630515.0529078147
+    },
+    "sports centres": {
+      "count": 61,
+      "total_area_m2": 127701.88791648655
+    },
+    "basketball courts": {
+      "count": 173,
+      "total_area_m2": 59842.59910281484
+    },
+    "tennis courts": {
+      "count": 226,
+      "total_area_m2": 149375.77247331897
+    },
+    "soccer fields": {
+      "count": 75,
+      "total_area_m2": 301640.78977550345
+    },
+    "libraries": {
+      "count": 52,
+      "total_area_m2": 66106.32949101133
+    },
+    "playgrounds": {
+      "count": 415,
+      "total_area_m2": 169214.73008472502
+    },
+    "baseball fields": {
+      "count": 124,
+      "total_area_m2": 540655.5596753362
+    },
+    "hockey rinks": {
+      "count": 0,
+      "total_area_m2": 0.0
+    },
+    "Schools": {
+      "count": 210,
+      "total_area_m2": 2982067.0870740013
+    },
+    "hospitals": {
+      "count": 11,
+      "total_area_m2": 506331.10951899004
+    }
+  },
+  "Denver": {
+    "parks": {
+      "count": 499,
+      "total_area_m2": 23190135.75322298
+    },
+    "pools": {
+      "count": 518,
+      "total_area_m2": 64791.084852458385
+    },
+    "hockey rinks": {
+      "count": 0,
+      "total_area_m2": 0.0
+    },
+    "playgrounds": {
+      "count": 663,
+      "total_area_m2": 332461.00984179217
+    },
+    "tennis courts": {
+      "count": 268,
+      "total_area_m2": 237120.82164616275
+    },
+    "soccer fields": {
+      "count": 153,
+      "total_area_m2": 731668.8939237444
+    },
+    "libraries": {
+      "count": 38,
+      "total_area_m2": 40992.7975113782
+    },
+    "baseball fields": {
+      "count": 167,
+      "total_area_m2": 990714.2708695419
+    },
+    "golf courses": {
+      "count": 15,
+      "total_area_m2": 8767669.458627343
+    },
+    "basketball courts": {
+      "count": 291,
+      "total_area_m2": 121659.18065192262
+    },
+    "sports centres": {
+      "count": 86,
+      "total_area_m2": 879290.2075531866
+    },
+    "hospitals": {
+      "count": 19,
+      "total_area_m2": 421534.5649515477
+    },
+    "Schools": {
+      "count": 310,
+      "total_area_m2": 7316083.100484081
+    }
+  },
+  "Washington": {
+    "parks": {
+      "count": 771,
+      "total_area_m2": 29542211.09045671
+    },
+    "hockey rinks": {
+      "count": 0,
+      "total_area_m2": 0.0
+    },
+    "golf courses": {
+      "count": 7,
+      "total_area_m2": 2068513.6814137732
+    },
+    "playgrounds": {
+      "count": 351,
+      "total_area_m2": 170915.92411816696
+    },
+    "soccer fields": {
+      "count": 49,
+      "total_area_m2": 245649.96862109483
+    },
+    "baseball fields": {
+      "count": 105,
+      "total_area_m2": 485952.34457086044
+    },
+    "libraries": {
+      "count": 54,
+      "total_area_m2": 101403.95892446843
+    },
+    "sports centres": {
+      "count": 86,
+      "total_area_m2": 1155203.0930753953
+    },
+    "tennis courts": {
+      "count": 299,
+      "total_area_m2": 237750.55758143892
+    },
+    "basketball courts": {
+      "count": 187,
+      "total_area_m2": 96634.96166358954
+    },
+    "pools": {
+      "count": 154,
+      "total_area_m2": 27242.495243847996
+    },
+    "Schools": {
+      "count": 345,
+      "total_area_m2": 3311200.2627231283
+    },
+    "hospitals": {
+      "count": 15,
+      "total_area_m2": 855234.8630880676
+    }
+  },
+  "Boston": {
+    "parks": {
+      "count": 446,
+      "total_area_m2": 16462986.380734177
+    },
+    "pools": {
+      "count": 63,
+      "total_area_m2": 15569.429872121027
+    },
+    "basketball courts": {
+      "count": 160,
+      "total_area_m2": 80344.3841243605
+    },
+    "tennis courts": {
+      "count": 147,
+      "total_area_m2": 80972.49839226644
+    },
+    "soccer fields": {
+      "count": 70,
+      "total_area_m2": 288379.04102834454
+    },
+    "baseball fields": {
+      "count": 123,
+      "total_area_m2": 549796.836302064
+    },
+    "libraries": {
+      "count": 125,
+      "total_area_m2": 56135.53836663293
+    },
+    "golf courses": {
+      "count": 3,
+      "total_area_m2": 1541692.2680536688
+    },
+    "sports centres": {
+      "count": 42,
+      "total_area_m2": 140714.73156781317
+    },
+    "hockey rinks": {
+      "count": 11,
+      "total_area_m2": 31414.205507864895
+    },
+    "playgrounds": {
+      "count": 302,
+      "total_area_m2": 243542.6638485852
+    },
+    "Schools": {
+      "count": 272,
+      "total_area_m2": 2965341.617295858
+    },
+    "hospitals": {
+      "count": 26,
+      "total_area_m2": 866927.7487281336
+    }
+  },
+  "Nashville": {
+    "golf courses": {
+      "count": 16,
+      "total_area_m2": 11022899.756914884
+    },
+    "sports centres": {
+      "count": 25,
+      "total_area_m2": 657718.6147024562
+    },
+    "basketball courts": {
+      "count": 88,
+      "total_area_m2": 42745.24232182103
+    },
+    "tennis courts": {
+      "count": 321,
+      "total_area_m2": 188014.78186489397
+    },
+    "baseball fields": {
+      "count": 150,
+      "total_area_m2": 899532.5205329654
+    },
+    "parks": {
+      "count": 244,
+      "total_area_m2": 59059593.11669326
+    },
+    "libraries": {
+      "count": 29,
+      "total_area_m2": 68393.67288695692
+    },
+    "pools": {
+      "count": 1585,
+      "total_area_m2": 136883.646926262
+    },
+    "hockey rinks": {
+      "count": 1,
+      "total_area_m2": 27649.678708763546
+    },
+    "soccer fields": {
+      "count": 95,
+      "total_area_m2": 570085.900590985
+    },
+    "playgrounds": {
+      "count": 259,
+      "total_area_m2": 121682.7025499028
+    },
+    "Schools": {
+      "count": 308,
+      "total_area_m2": 8865384.281571042
+    },
+    "hospitals": {
+      "count": 18,
+      "total_area_m2": 1185744.6780460726
+    }
+  },
+  "Detroit": {
+    "sports centres": {
+      "count": 30,
+      "total_area_m2": 127355.91065225612
+    },
+    "basketball courts": {
+      "count": 168,
+      "total_area_m2": 84145.18070821167
+    },
+    "tennis courts": {
+      "count": 197,
+      "total_area_m2": 63246.4635097681
+    },
+    "soccer fields": {
+      "count": 59,
+      "total_area_m2": 247110.49527784635
+    },
+    "baseball fields": {
+      "count": 126,
+      "total_area_m2": 637950.3888407818
+    },
+    "pools": {
+      "count": 71,
+      "total_area_m2": 10846.444778746765
+    },
+    "hockey rinks": {
+      "count": 1,
+      "total_area_m2": 10399.905336825233
+    },
+    "playgrounds": {
+      "count": 420,
+      "total_area_m2": 157267.84538828942
+    },
+    "parks": {
+      "count": 422,
+      "total_area_m2": 28262675.3245769
+    },
+    "libraries": {
+      "count": 33,
+      "total_area_m2": 84489.56206472078
+    },
+    "golf courses": {
+      "count": 9,
+      "total_area_m2": 3314981.2581612747
+    },
+    "Schools": {
+      "count": 328,
+      "total_area_m2": 6069873.112474432
+    },
+    "hospitals": {
+      "count": 14,
+      "total_area_m2": 902492.561407961
+    }
+  },
+  "Portland": {
+    "parks": {
+      "count": 271,
+      "total_area_m2": 10641910.519056708
+    },
+    "hockey rinks": {
+      "count": 1,
+      "total_area_m2": 13197.43132592526
+    },
+    "playgrounds": {
+      "count": 427,
+      "total_area_m2": 153237.50387713432
+    },
+    "sports centres": {
+      "count": 175,
+      "total_area_m2": 1329856.8143012961
+    },
+    "basketball courts": {
+      "count": 192,
+      "total_area_m2": 58401.25574138692
+    },
+    "tennis courts": {
+      "count": 228,
+      "total_area_m2": 142679.21160946117
+    },
+    "soccer fields": {
+      "count": 147,
+      "total_area_m2": 618059.7421466399
+    },
+    "baseball fields": {
+      "count": 213,
+      "total_area_m2": 784012.5631972118
+    },
+    "libraries": {
+      "count": 30,
+      "total_area_m2": 37484.26516121909
+    },
+    "pools": {
+      "count": 651,
+      "total_area_m2": 47747.55219860976
+    },
+    "golf courses": {
+      "count": 9,
+      "total_area_m2": 5579607.097115814
+    },
+    "hospitals": {
+      "count": 12,
+      "total_area_m2": 647861.2610580394
+    },
+    "Schools": {
+      "count": 219,
+      "total_area_m2": 4881056.55163862
+    }
+  },
+  "Las Vegas": {
+    "pools": {
+      "count": 467,
+      "total_area_m2": 37729.70858483734
+    },
+    "golf courses": {
+      "count": 15,
+      "total_area_m2": 13123908.5414911
+    },
+    "playgrounds": {
+      "count": 62,
+      "total_area_m2": 52393.53463354172
+    },
+    "sports centres": {
+      "count": 17,
+      "total_area_m2": 755539.8077674647
+    },
+    "libraries": {
+      "count": 9,
+      "total_area_m2": 23268.588595274232
+    },
+    "tennis courts": {
+      "count": 204,
+      "total_area_m2": 134599.65237889317
+    },
+    "soccer fields": {
+      "count": 46,
+      "total_area_m2": 454497.4605985266
+    },
+    "baseball fields": {
+      "count": 111,
+      "total_area_m2": 1562922.6255054984
+    },
+    "parks": {
+      "count": 301,
+      "total_area_m2": 10574836.555350456
+    },
+    "hockey rinks": {
+      "count": 0,
+      "total_area_m2": 0.0
+    },
+    "basketball courts": {
+      "count": 89,
+      "total_area_m2": 65537.82846334302
+    },
+    "hospitals": {
+      "count": 13,
+      "total_area_m2": 956483.9605376918
+    },
+    "Schools": {
+      "count": 174,
+      "total_area_m2": 7911604.470470932
+    }
+  }
+}
