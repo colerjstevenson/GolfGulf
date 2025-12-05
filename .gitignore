@@ -1,23 +1,18 @@
 ############################
 # Project Specific Ignores #
 ############################
-# Ignore all contents of the data directory except essential JSON files and web_assets
-data/
+# Ignore everything in data by default
+data/**
+# Allow required JSON for the site
 !data/city_demographics.json
 !data/city_amenities.json
+# Allow censusShape directories and city subfolders
 !data/censusShape/
-data/censusShape/*
-# But allow web_assets folders and their contents
+!data/censusShape/*/
+# Allow web_assets (geojson etc.) inside each city
 !data/censusShape/*/web_assets/
 !data/censusShape/*/web_assets/**
-
-# Large GeoJSON and CSV files
-*.geojson
-*.csv
-*.shp
-*.shx
-*.dbf
-*.prj
+# Keep large artifacts excluded
 golf_data.zip
 golf_courses_map.html
 cache/
