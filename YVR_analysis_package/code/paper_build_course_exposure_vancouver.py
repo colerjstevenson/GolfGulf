@@ -11,7 +11,7 @@ from shapely.geometry import shape
 from shapely.ops import transform
 from pyproj import Transformer
 
-ROOT = Path(__file__).resolve().parent
+ROOT = Path(__file__).resolve().parent.parent.parent
 
 TRACTS_GEOJSON = ROOT / "data/censusShape/vancouver/web_assets/tracts.geojson"
 GOLF_GEOJSON = ROOT / "data/censusShape/vancouver/web_assets/golf_courses.geojson"

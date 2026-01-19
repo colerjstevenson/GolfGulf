@@ -11,7 +11,7 @@ from pyproj import Geod
 from shapely.geometry import shape
 
 
-ROOT = Path(__file__).resolve().parent
+ROOT = Path(__file__).resolve().parent.parent.parent
 
 CENSUS_CSV = ROOT / "data/censusShape/vancouver/vancouver_data.csv"
 TRACTS_GEOJSON = ROOT / "data/censusShape/vancouver/web_assets/tracts.geojson"

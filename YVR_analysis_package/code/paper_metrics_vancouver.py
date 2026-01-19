@@ -28,7 +28,7 @@ from shapely.geometry import Point
 from shapely.ops import unary_union
 
 # ---- Paths (match your existing structure) ----
-ROOT = Path(__file__).resolve().parent
+ROOT = Path(__file__).resolve().parent.parent.parent
 TRACTS_GEOJSON = ROOT / "data/censusShape/vancouver/web_assets/tracts.geojson"
 GOLF_GEOJSON   = ROOT / "data/censusShape/vancouver/web_assets/golf_courses.geojson"
 CENSUS_CSV     = ROOT / "data/censusShape/vancouver/vancouver_data.csv"

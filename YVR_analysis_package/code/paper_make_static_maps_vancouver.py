@@ -15,13 +15,14 @@ from matplotlib.patches import Patch
 # ---------------------------------------------------------------------
 # Paths / config
 # ---------------------------------------------------------------------
-ROOT = Path(__file__).resolve().parent
+ROOT = Path(__file__).resolve().parent.parent.parent
+PKG_ROOT = Path(__file__).resolve().parent.parent
 
 IN_CSV = ROOT / "data/censusShape/vancouver/web_assets/metrics/_paper_analytic_tracts.csv"
 TRACTS_GEO = ROOT / "data/censusShape/vancouver/web_assets/tracts.geojson"
 GOLF_GJ = ROOT / "data/censusShape/vancouver/web_assets/golf_courses.geojson"
 
-OUT_DIR = ROOT / "outputs/paper_figures/maps"
+OUT_DIR = PKG_ROOT / "outputs/paper_figures/maps"
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 
 # Exclusions for map overlays (consistent with tables/figures)
@@ -223,6 +224,10 @@ def make_quintile_legend(
     handles.append(Line2D([0], [0], color="#d62728", linewidth=2, label="Private"))
     handles.append(Line2D([0], [0], color="#9467bd", linewidth=2, label="Municipal"))
     handles.append(Line2D([0], [0], color="#1f77b4", linewidth=2, label="Public"))
+    
+    # Add Langara marker
+    handles.append(Line2D([0], [0], marker="*", color="w", markerfacecolor="black", 
+                         markeredgecolor="black", markersize=12, label="Langara GC", linestyle="None"))
 
     leg = ax.legend(
         handles=handles,
@@ -267,11 +272,12 @@ def make_quintile_map(
     if qcol not in tracts.columns:
         raise RuntimeError(f"Missing quintile column: {qcol}")
 
-    # Filter golf courses to only those that intersect tracts, plus University Golf Club
+    # Filter golf courses to only those that intersect tracts, plus University Golf Club and Langara
     tracts_union = tracts.unary_union
     golf_filtered = golf[
         golf.geometry.intersects(tracts_union) | 
-        (golf["course_name"].str.strip() == "University Golf Club")
+        (golf["course_name"].str.strip() == "University Golf Club") |
+        (golf["course_name"].str.strip() == "Langara Golf Course")
     ].copy()
 
     fig, ax = plt.subplots(figsize=(10, 9))  # larger for better visibility
@@ -317,6 +323,15 @@ def make_quintile_map(
         else:
             # Fallback to black if no access column
             golf_filtered.plot(ax=ax, facecolor="black", edgecolor="black", linewidth=1.5, alpha=0.7, zorder=4)
+
+    # Mark Langara Golf Course with a black star
+    if "course_name" in golf_filtered.columns:
+        langara = golf_filtered[golf_filtered["course_name"].str.contains("Langara", case=False, na=False)]
+        if len(langara) > 0:
+            for _, row in langara.iterrows():
+                pt = row.geometry.representative_point()
+                ax.scatter(pt.x, pt.y, marker="*", s=150, color="black", edgecolors="black", 
+                          linewidths=0.5, zorder=12, label="Langara")
 
     # Tract boundaries LAST (so they are visible)
     tracts.boundary.plot(ax=ax, linewidth=0.6, edgecolor="black", zorder=10)
